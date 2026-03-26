@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cars and Drones</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="/node_modules/material-design-lite/dist/material.css">
+
+        <script src="node_modules/traceur/bin/traceur.js"></script>
+        <script src="node_modules/systemjs/dist/system.js"></script>
+        <script src="node_modules/material-design-lite//dist/material.js"></script>
+        <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhQ8I4epVtcn5-oxX63Gycpnc58cinq9c&libraries=maps&callback=googleMapsCallback"></script>
+    </head>
+    <body>
+        <script>
+            function googleMapsCallback() { //Will run after Google Maps API has loaded. 
+                System.config({ //Configures the SystemJS module loader with paths an a transpiler and then imports main application file (app.js)
+                    transpiler: 'plugin-babel', //Specifies that pluginb-babel should be used to transpile modules on the fly within the browser
+                    map: { //Maps modules names to their files paths (so SystemJS knows where to find transpiler and jQuery files)
+                        'plugin-babel': './node_modules/systemjs-plugin-babel/plugin-babel.js',
+                        'systemjs-babel-build': './node_modules/systemjs-plugin-babel/systemjs-babel-browser.js'
+                    },
+                    paths: { //Defines file locaions ensuring SystemJS knows where to look
+                    'jquery': './node_modules/jquery/dist/jquery.js'
+                    }
+                });
+                System.import('src/app.js'); //Loads and executes main application file (app.js)
+            }
+        </script>
+    </body>
+</html>
