@@ -3,10 +3,21 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <title>JS Challenge</title>
     
 </head>
 <body>
+    <h2>JavaScript Error Validations</h2>
+
+    <p>Enter a number between 12 and 18:</p>
+    <input id="entry" type="text">
+    <button type="button" onclick="validateNum()">Validate</button>
+    <p id="messageSpace"></p>
+    <br /><br />
+    <form name="testForm" onsubmit="return JSvalidation()">
+        TestField: <input type="text" name="test" />
+        <input type="submit" value="Check it!" />
+    </form>
 
     <script src="JavaScriptChallenge.js"></script>
 </body>
