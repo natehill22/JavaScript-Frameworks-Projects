@@ -27,5 +27,5 @@ const dog3 = new Dog("Dachshund", "Brown", "9 inches", "20 pounds");
 
 //Calling the object methods for the first object
 dog1.shake();
-dog1.sit();
-dog1.layDown();
+dog2.sit();
+dog3.layDown();

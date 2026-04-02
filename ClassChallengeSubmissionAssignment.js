@@ -52,6 +52,6 @@ const a = new Shape('shape (Seafoam)');
 
 shapeList = [x, y, z, a]; //Turning all instances into a list for easy looping
 for (const i of shapeList) { //Cycle through instances to display all information
-    console.log(i.color); //Calling inherited property
-    console.log(i.getArea()); //Calling object methods (both overridden and fully inherited)
+    console.log("Shape (Color):", i.color); //Calling inherited property
+    console.log("Area:", i.getArea()); //Calling object methods (both overridden and fully inherited)
 }
