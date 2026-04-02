@@ -9,7 +9,6 @@
 }
 
 #colors li {
-    background-color: #ff0099;
     color: black;
     cursor: auto;
     font-size: 30px;
@@ -23,9 +22,10 @@
     margin-bottom: 20px;
 }
 
+#colors li.magenta { background-color: #ff0099; }
 #colors li.green { background-color: #99ff00; }
 #colors li.blue { background-color: #00ffff; }
-#colors li.yellow { background-color: #990099; }
+#colors li.purple { background-color: #990099; }
 #colors li.on { background-color: black; }
 
 p#start { 
