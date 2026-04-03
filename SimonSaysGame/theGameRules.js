@@ -100,7 +100,6 @@ $(function() {
         clickedNo = 0;
         $(this).text('Simon Says...'); //Updates start text
         $('body').removeClass('game-over'); //Removes 'game-over' class
-        $('#colors li.magenta').animate({top: "0px"}, 1000);
         setupLightSequence(); 
     }
     start.click(init); //Attaches init function to the click of start text
