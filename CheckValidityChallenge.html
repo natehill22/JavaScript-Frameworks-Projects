@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <h3>Enter a number:</h3>
+        <input id="integerTest" type="number" min="10" max="30" required>
+        <button onclick="validate()">Validate</button>
+
+        <p>If entered number is between 10 and 30, you will be able to proceed.</p>
+
+        <p id="validationSpace"></p>
+
+        <script>
+            function validate() {
+                const x = document.getElementById("integerTest");
+                if (x.checkValidity()) {
+                    document.getElementById("validationSpace").innerHTML = "<em>Proceed</em>";
+                }else {
+                    document.getElementById("validationSpace").innerHTML = x.validationMessage;
+                }
+            }
+        </script>
+    </body>
+</html>
