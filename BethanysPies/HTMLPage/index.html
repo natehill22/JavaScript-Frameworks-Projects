@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Pie Samples</title>
+</head>
+
+<body>
+    <h1>Pie Sample</h1>
+
+    <button onclick="getAllPies();">Get All Pies</button>
+
+    <script>
+        'use strict';
+
+        const URL = "http://localhost:5000/api/";
+
+        //Creates a new XMLHttpRequest that prints several response items to the console log when a successful GET is performed
+        function getAllPies() {
+            console.log("GET ALL");
+
+            let req = new XMLHttpRequest();
+            req.onreadystatechange = function() {
+                //Anytime a state is changed, check if it's DONE and has a status of 200
+                if (this.readyState === XMLHttpRequest.DONE && 
+                    this.status === 200) {
+                   let response = JSON.parse(this.response); //Turns the response into a JSON object
+                   console.log(response.status);
+                   console.log(response.statusText); 
+                   console.log(response.data); 
+                }
+            };
+            req.open("GET", URL); //Performs a GET passing in the URL
+            req.send(); 
+        }
+    </script>
+</body>
+</html>
