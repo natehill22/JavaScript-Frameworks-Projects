@@ -1,0 +1,1 @@
+{"type":"zeppelin", "hasSkeleton":true, "howFly":"buoyancy ", "gas":"hyrdogen and helium"}
