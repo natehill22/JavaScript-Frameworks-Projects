@@ -1,3 +1,4 @@
+//Prints Pluralsight rocks after 2 seconds
 const rocks = who => {
   console.log(who + ' rocks');
 };

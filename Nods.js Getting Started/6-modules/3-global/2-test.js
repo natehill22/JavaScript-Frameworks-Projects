@@ -1,3 +1,3 @@
 require('./2-set');
 
-console.log(answer);
+console.log(answer); //Tests 2-set files effectiveness

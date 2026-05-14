@@ -7,6 +7,7 @@ class Person {
   }
 }
 
+//Student is inheriting Person - name
 class Student extends Person {
   constructor(name, level) {
     super(name);
@@ -23,6 +24,6 @@ const o3 = new Student("Mary", "2nd Grade");
 
 o3.greet = () => console.log('I am special!');
 
-o1.greet();
-o2.greet();
-o3.greet();
+o1.greet(); //Returns the Person greeting with Max as the value
+o2.greet(); //Returns the Student greeting with Tina and 1st Grade as the value
+o3.greet(); //Returns the "I am special"greeting defined after all of it

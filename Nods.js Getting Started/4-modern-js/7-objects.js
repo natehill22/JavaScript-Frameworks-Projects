@@ -1,3 +1,4 @@
+//Demonstrates dynamic property syntax within object literals
 const mystery = "answer"
 
 const PI = Math.PI;
@@ -10,3 +11,5 @@ const obj = {
   [mystery]: 42,
   PI,
 };
+
+//mystery would equal undefined after running as it should've been replaced by "answer: 42,"

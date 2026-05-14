@@ -1,3 +1,4 @@
+//Prints the message after 4 seconds using a function defined before setTimeout
 const func = () => {
   console.log('Hello after 4 seconds');
 };

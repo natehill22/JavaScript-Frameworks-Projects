@@ -1,5 +1,4 @@
-// "this" here is "exports"
-
+//At root level, "this" references the module.exports object
 this.id = 'exports';
 
 const testerObj = {
@@ -12,5 +11,5 @@ const testerObj = {
   },
 };
 
-testerObj.func1();
-testerObj.func2();
+testerObj.func1(); //"this" here is func1 (etc.) / the caller
+testerObj.func2(); //"this" here is "exports" / the parent
