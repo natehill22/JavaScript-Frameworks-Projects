@@ -1,0 +1,6 @@
+#Visual Studios folder
+.vs/
+.vs
+
+#Node Modules folder and its contents
+node_modules/

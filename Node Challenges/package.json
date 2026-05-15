@@ -1,0 +1,8 @@
+{
+  "type": "commonjs",
+  "dependencies": {
+    "formidable": "^3.5.4",
+    "nodemailer": "^8.0.7",
+    "upper-case": "^3.0.0"
+  }
+}
