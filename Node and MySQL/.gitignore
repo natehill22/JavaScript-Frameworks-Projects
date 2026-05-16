@@ -2,5 +2,5 @@
 .vs/
 .vs
 
-#Node Modules folder and its contents
+#Node Modules folder
 node_modules/
