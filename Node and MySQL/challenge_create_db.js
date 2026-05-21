@@ -13,8 +13,14 @@ con.connect(function(err) {
         console.error("Connection failed details:");
         console.error("Code:", err.code);
         console.error("Message:", err.message);
-        return; // Prevent the crash
+        return; //Prevent the crash
     }
     //Print success message
-    console.log("Connected successfully!");
+    console.log("Connected!");
+    //Run the query to create the database [named mydb]
+    con.query("CREATE DATABASE mydb", function (err, result) {
+        //Show error or success message
+        if (err) throw err;
+        console.log("Database created");
+    });
 });
