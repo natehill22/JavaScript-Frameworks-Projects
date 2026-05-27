@@ -1,47 +1,49 @@
-// random integer helper function
+//Returns a random integer between given min and max
 function randomInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// keyboard letter button component
+//Defines keyboard letter-button component
 Vue.component("letter-button", {
 props: ["letter", "gameOver", "twoPlayers"],
+//Dynamically binds button's ID to the letter prop value, disables the button, triggers 'clicked' method upon click, and displays character inside button
 template: "<button class='keyboard-row-letter' :id='letter' :disabled='disabled' @click='clicked()'>{{ letter }}</button>",
+//Defines a non-disabled state (this is reactive and can be updated later)
 data: function() {
     return {
         disabled: false
     };
 },
-// disable button on click, and send 'check' event to run check() in main vue instance
+//Disables keyboard button and sends 'check' event to run check() in main Vue instance upon click
 methods: {
     clicked: function() {
         this.disabled = true;
-        this.$emit("check");
+        this.$emit("check"); //Custom event used to run the 'check' method
     }
 },
 watch: {
-    // disable all button on game over; re-enable all button on restart
+    //Disables all buttons on game over; re-enables all buttons on restart
     gameOver: function(newValue) {
         this.disabled = newValue;
     },
-    // re-enable all button when a new two-player game is started
-    twopPlayers: function(newValue) {
+    //Re-enables all button when a new two-player game is started
+    twoPlayers: function(newValue) {
         this.disabled = false;
     }
 }
 })
 
-// main vue instance
+//Main Vue instance
 var app = new Vue({
-el: "#app",
+el: "#app", //Ties to style
 data: {
-    // keyboard letters
+    //Virtual keyboard letters (in rows matching keyboard layout)
     letters: [
         ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
         ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
         ["Z", "X", "C", "V", "B", "N", "M"]
     ],
-    // words to choose from
+    //Word pool (words to draw from)
     words: [
         "BUTTERCUP",
         "TANSY",
@@ -61,62 +63,70 @@ data: {
         "BILIOUS",
         "INTESTINE",
         "AMPLIFY",
+        "GALLANTRY",
+        "VOLUMINOUS",
+        "STARGAZER",
+        "FILTHY",
+        "MANGROVE",
+        "SUFFICIENT",
+        "JOCULAR",
+        "PLUCKY"
     ],
-    // currentWord will be set to a random word from above list
+    //Sets currentWord to blank (will be set to a random word from above list)
     currentWord: "",
-    // each element in this array is a letter in the word
+    //Sets wordDivs to be an empty array (will be used to create blanks for each letter in the selected word)
     wordDivs: [],
-    // to count the number of wrong guesses
+    //Counts the number of wrong guesses (initially set to 0)
     guesses: 0,
     gameOver: false,
     lost: false,
     twoPlayers: false,
-    // will be set to the canvas element in mounted()
+    //Sets the canvas to blank (will be set in 'mounted' method)
     canvas: "",
-    // will be set to the canvas 2d context
+    //Sets ctx to blank (will be set to the canvas 2d context in 'mounted' method)
     ctx: ""
 },
 
 methods: {
 
-    // draws the gallows
+    //Draws the gallows
     drawGallows: function(ctx) {
-        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        ctx.fillStyle = "#FF9800";
-        ctx.strokeStyle = "#FF9800";
-        ctx.beginPath();
-        // left side
+        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); //Clears entire canvas
+        ctx.fillStyle = "#4A2E1B"; //Sets color
+        ctx.strokeStyle = "#4A2E1B"; //Retrieves color
+        ctx.beginPath(); //Resets current path, so a new shape can be drawn
+        //Left side
         ctx.moveTo(this.canvas.width / 10, this.canvas.height / 10);
         ctx.lineTo(this.canvas.width / 10, this.canvas.height * 0.95);
-        // bottom side
+        //Bottom side
         ctx.lineTo(this.canvas.width * 0.8, this.canvas.height * 0.95);
-        // top side
+        //Top side
         ctx.moveTo(this.canvas.width / 10, this.canvas.height / 10);
         ctx.lineTo(this.canvas.width * 0.4, this.canvas.height / 10);
-        // hanging notch
+        //Hanging notch
         ctx.lineTo(this.canvas.width * 0.4, this.canvas.height / 5);
-        ctx.stroke();
-        ctx.closePath();
+        ctx.stroke(); //Draws visible outline using set line color and thickness
+        ctx.closePath(); //Brings drawing position back to starting point
     },
 
-    // fill this.wordDivs with empty strings to create the orange blanks
+    //Fills this.wordDivs with empty strings to create the brown letter-blanks
     makeBlanks: function() {
         for (var i = 0; i < this.currentWord.length; i++) {
-            this.wordDivs.push("");
+            this.wordDivs.push(""); //Adds each element to the empty array (to the end)
         }
     },
 
-    // draws the appropriate part of the hanging man and/or 'game over'
+    //Draws appropriate part of the hanging man and/or 'game over'
     updateCanvas: function(ctx) {
-        // this.drawGallows(ctx);
-        // draw the head
+        //Draws the head
         if (this.guesses === 0) {
             ctx.beginPath();
+            //Creates a circle that represents the head
             ctx.arc(this.canvas.width * 0.4, (this.canvas.height / 5) + 20, 20, 0, 2 * Math.PI);
             ctx.stroke();
             ctx.closePath();
         }
-        // draw the torso
+        //Draws the torso
         else if (this.guesses === 1) {
             ctx.beginPath();
             ctx.moveTo(this.canvas.width * 0.4, (this.canvas.height / 5) + 40);
@@ -124,7 +134,7 @@ methods: {
             ctx.stroke();
             ctx.closePath();
         }
-        // draw the right leg
+        //Draws the right leg
         else if (this.guesses === 2) {
             ctx.beginPath();
             ctx.moveTo(this.canvas.width * 0.4, this.canvas.height / 2);
@@ -132,7 +142,7 @@ methods: {
             ctx.stroke();
             ctx.closePath();
         }
-        // draw the left leg
+        //Draws the left leg
         else if (this.guesses === 3) {
             ctx.beginPath();
             ctx.moveTo(this.canvas.width * 0.4, this.canvas.height / 2);
@@ -140,7 +150,7 @@ methods: {
             ctx.stroke();
             ctx.closePath();
         }
-        // draw the right arm
+        //Draws the right arm
         else if (this.guesses === 4) {
             ctx.beginPath();
             ctx.moveTo(this.canvas.width * 0.4, (this.canvas.height / 5) + 55);
@@ -148,7 +158,7 @@ methods: {
             ctx.stroke();
             ctx.closePath();
         }
-        // draw the left arm and handle game over
+        //Draws the left arm and handles game over
         else if (this.guesses === 5) {
             ctx.beginPath();
             ctx.moveTo(this.canvas.width * 0.4, (this.canvas.height / 5) + 55);
@@ -156,18 +166,18 @@ methods: {
             ctx.stroke();
             ctx.closePath();
 
-            // game over
-            ctx.font = "24px Roboto, sans-serif";
+            //Game over
+            ctx.font = "24px Inter, sans-serif";
             ctx.fillText("Game Over", this.canvas.width * 0.4 - 30, this.canvas.height * 0.9);
             this.gameOver = true;
             this.lose = true;
 
-            // fil in the word with the correct answer
+            //Fills in the word with the correct answer (when lost)
             for (var i = 0; i < this.currentWord.length; i++) {
                 Vue.set(this.wordDivs, i, this.currentWord[i]);
             }
         }
-        this.guesses++
+        this.guesses++ //Increments guesses by 1 each time around
     },
 
     // check the chosen letter when a letter component emits 'check'
@@ -184,7 +194,7 @@ methods: {
             // if there are no more blanks in the word, you win
             if (!this.wordDivs.some(function(value) {return value == ""})) {
                 this.gameOver = true;
-                this.ctx.font = "24px Roboto, sans-serif";
+                this.ctx.font = "24px Inter, sans-serif";
                 this.ctx.fillText("You Win!", this.canvas.width * 0.4 - 30, this.canvas.height * 0.9);
             }
             // if they guess wrong, draw the man
@@ -213,7 +223,7 @@ methods: {
         }
     },
 
-    //starts two-player mode and prompts the user to enter a word
+    // starts two-player mode and prompts the user to enter a word
     twoPlayer: function() {
         if (!this.twoPlayers) {
             this.gameOver = true;
@@ -251,7 +261,7 @@ methods: {
             var letters = /^[A-Za-z]+$/;
             while (!letters.test(this.currentWord)) {
                 try {
-                    this.currentWord = prompt("Only letters please! Enter a word:" .toUpperCase();)
+                    this.currentWord = prompt("Only letters please! Enter a word:").toUpperCase();
                 }
                 catch(e) {
                     this.onePlayer();

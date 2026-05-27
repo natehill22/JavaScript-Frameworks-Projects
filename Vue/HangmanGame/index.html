@@ -5,7 +5,7 @@
     <meta name="description" content="Vue.js Hangman">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
-        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Inter:300,400" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
         <link rel="stylesheet" type="text/css" href="css/style.css">
         <link rel="icon" type="image/x-icon" href="images/favicon.ico">
@@ -16,32 +16,41 @@
 
     <div id="app">
 
-        <!--canvas where hangman is drawn-->
+        <!--Canvas where hangman is drawn-->
         <div id="board">
             <canvas id="board-canvas"></canvas>
         </div>
 
-        <!--row of blank letters for the selected word-->
+        <!--Row of blank letters for selected word-->
         <div id="word">
+            <!--Renders a new div for every letter found and hides letter brackets before Vue instance fully loads-->
             <div class="word-blankletter" v-for="letter in wordDivs" v-cloak>{{ letter }}</div>
         </div>
 
-        <!--keyboard-->
+        <!--Renders a keyboard for letter input-->
         <div id="keyboard">
+            <!--For every row in keyboard, add keyboard row class-->
             <div v-for="row in letters" class="keyboard-row">
+                <!--For ever letter in keyboard row, create a button containing a single letter, tie 
+                into the gameOver and twoPlayers methods (as an arguement), provide unique ID for each 
+                button, runs check event/method on 'checked' letter, and hide template brackets 
+                until fully loaded-->
                 <letter-button v-for="letter in row" :letter="letter" :game-over="gameOver" :two-players="twoPlayers" :key="letter" @check="check(letter)" v-cloak></letter-button>
             </div>
         </div>
 
-        <!--'one player' 'play again' 'two players'-->
+        <!--Renders 'one player', 'play again', and 'two players' buttons at screen bottom-->
         <div id="buttons">
-            <button class="buttons-button" :class="{ orange: !twoPlayers }" @click="onePlayer">One Player</button>
+            <!--Dynamically adds the brown class when twoPlayers is not true and triggers the onePlayer method when clicked-->
+            <button class="buttons-button" :class="{ brown: !twoPlayers }" @click="onePlayer">One Player</button>
+            <!--Dynamically adds the hidden class when gameOver is not true and runs the playAgain method when clicked-->
             <button id="playagain" class="buttons-button" :class="{ hidden: !gameOver }" @click="playAgain">Play Again</button>
-            <button class="buttons-button" :class="{ orange: twoPlayers }" @click="twoPlayer">Two Players</button>
+            <!--Dynamically adds the brown class when twoPlayers is true and triggers the twoPlayer method when clicked-->
+            <button class="buttons-button" :class="{ brown: twoPlayers }" @click="twoPlayer">Two Players</button>
         </div>
     </div>
 
-<script type="text/javascript" src="https://unpkg.com/vue/dist/vue.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/vue@2.6.14/dist/vue.min.js"></script>
 <script src="js/hangman.js"></script>
 </body>
 </html>

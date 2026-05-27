@@ -1,5 +1,4 @@
 /*
-
 HANGMAN
 Table of Contents
 
@@ -11,44 +10,46 @@ III. the app
     C. blank letters
     D. keyboard
     E. game-option buttons
-
 */
 
-/* I. global element selectors */
+/*I. global element selectors*/
 html, body {
     align-items: center;
     background-color: #F5F5F6;
     color: #333;
     display: flex;
     flex-direction: column;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Inter', sans-serif;
     height: 100%;
     width: 100%;
 }
 
+/*All keyboard and Play buttons*/
 button {
     background-color: white;
     border: none;
     color: #333;
     box-shadow: 0 2px 5px #D0D0D0;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Inter', sans-serif;
     margin: 2px;
 }
 
+/*Previously selected letter buttons*/
 button:disabled {
     color: #CCC
 }
 
-/* II. helper classes applied by js */
+/*II. helper classes applied by js*/
 .hidden {
     display: none;
 }
 
-.orange {
-    background-color: #ff9800;
+.brown {
+    background-color: #4A2E1B;
+    color: white;
 }
 
-/* III. the app and its contents */
+/*III. the app and its contents*/
 #app {
     align-items: center;
     display: flex;
@@ -58,9 +59,9 @@ button:disabled {
     width: 100%;
 }
 
-/* B. canvas container */
+/*B. canvas container*/
 #board {
-    background-color: white;
+    background-color: #DEFDE0;
     box-shadow: 0 2px 5px #D0D0D0;
     flex: 2 1 auto;
     margin: 10px 0 0 0;
@@ -68,7 +69,7 @@ button:disabled {
     width: 95%;
 }
 
-/* C. blank letters */
+/*C. blank letters*/
 #word {
     display: flex;
     flex-wrap: wrap;
@@ -78,8 +79,9 @@ button:disabled {
 
 .word-blankletter {
     align-items: flex-end;
-    background-color: #ff9800;
+    background-color: #4A2E1B;
     box-shadow: 0 2px 5px #D0D0D0;
+    color: white;
     display: flex;
     height: 30px;
     justify-content: center;
@@ -87,7 +89,7 @@ button:disabled {
     width: 20px;
 }
 
-/* D. keyboard */
+/*D. keyboard*/
 #keyboard {
     align-items: center;
     display: flex;
@@ -104,7 +106,7 @@ button:disabled {
     width: 28px;
 }
 
-/* E. game-option buttons */
+/*E. game-option buttons*/
 #buttons {
     display: flex;
     justify-content: space-between;
