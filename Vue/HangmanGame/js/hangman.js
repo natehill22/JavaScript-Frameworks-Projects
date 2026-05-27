@@ -174,117 +174,117 @@ methods: {
 
             //Fills in the word with the correct answer (when lost)
             for (var i = 0; i < this.currentWord.length; i++) {
-                Vue.set(this.wordDivs, i, this.currentWord[i]);
+                Vue.set(this.wordDivs, i, this.currentWord[i]); //Add new property to (target, index/property name, value)
             }
         }
         this.guesses++ //Increments guesses by 1 each time around
     },
 
-    // check the chosen letter when a letter component emits 'check'
+    //Checks chosen letter when letter component emits 'check' event
     check: function(letter) {
         if (!this.gameOver) {
-            var guessCorrect = false;
-            // check if the letter is in the word, if so, fill it in
-            for (var i = 0; i < this. currentWord.length; i++) {
+            var guessCorrect = false; //Sets default value of false for guessCorrect variable
+            //Checks if letter is in word, if so, fill it in in all occurring blanks
+            for (var i = 0; i < this.currentWord.length; i++) {
                 if (letter == this.currentWord[i]) {
                     Vue.set(this.wordDivs, i, letter);
-                    guessCorrect = true;
+                    guessCorrect = true; //Updates guessCorrect variable to true
                 }
             }
-            // if there are no more blanks in the word, you win
+            //Sets winning status if there are no more blanks in the word
             if (!this.wordDivs.some(function(value) {return value == ""})) {
                 this.gameOver = true;
                 this.ctx.font = "24px Inter, sans-serif";
                 this.ctx.fillText("You Win!", this.canvas.width * 0.4 - 30, this.canvas.height * 0.9);
             }
-            // if they guess wrong, draw the man
+            //Draws the man if guess is wrong
             if (!guessCorrect) {
-                this.updateCanvas(this.ctx);
+                this.updateCanvas(this.ctx); //Calls updateCanvas method to draw the man based on how many guesses user is at
             }
         }
     },
 
-    //re-initializes the game
-    restart: function () {
+    //Re-initializes game (to a starting position)
+    restart: function() {
         this.gameOver = false;
         this.lose = false;
         this.guesses = 0;
-        this.wordDivs.splice(0);
-        this.drawGallows(this.ctx);
-        this.makeBlanks();
+        this.wordDivs.splice(0); //Completely empties wordDivs array
+        this.drawGallows(this.ctx); //Draws gallows
+        this.makeBlanks(); //Chooses new word and draw blanks for it
     },
 
-    // resets the game to one-player mode and chooses a new word
+    //Resets game to one-player mode and chooses a new word
     onePlayer: function() {
         if (this.twoPlayers) {
-            this.twoPlayers = false;
-            this.currentWord = this.words[randomInteger(0, this.words.length - 1)];
-            this.restart();
+            this.twoPlayers = false; //Sets twoPlayers to false (within a twoPlayers true state)
+            this.currentWord = this.words[randomInteger(0, this.words.length - 1)]; //Chooses new word
+            this.restart(); 
         }
     },
 
-    // starts two-player mode and prompts the user to enter a word
+    //Starts two-player mode and prompts user to enter a word
     twoPlayer: function() {
         if (!this.twoPlayers) {
-            this.gameOver = true;
-            this.twoPlayers = true;
-            this.wordDivs.splice(0);
+            this.gameOver = true; //Triggers gameOver method
+            this.twoPlayers = true; //Sets twoPlayers to true (within a twoPlayers false state)
+            this.wordDivs.splice(0); //Completely empties wordDivs array
             try {
-                this.currentWord = prompt("Enter a word!").toUpperCase();
+                this.currentWord = prompt("Enter a word!").toUpperCase(); //Creates a prompt for user to enter a new (custom) word
             }
             catch(e) {
-                this.onePlayer();
+                this.onePlayer(); //Triggers a one-player game if cancel is pressed or there's an error
                 return;
             }
-            var letters = /^[A-Za-z]+$/;
+            var letters = /^[A-Za-z]+$/; //Defines acceptable inputs (letters only) using regex
             while (!letters.test(this.currentWord)) {
                 try {
-                    this.currentWord = prompt("Only letters please! Enter a word:").toUpperCase();
+                    this.currentWord = prompt("Only letters please! Enter a word:").toUpperCase(); //If non-letters are given, give error message
                 }
                 catch(e) {
-                    this.onePlayer();
+                    this.onePlayer(); //Triggers a one-player game if cancel is pressed or there's an error
                     return;
                 }
             }
-            this.restart();
+            this.restart(); //Restarts new game regardless of Cancel or New Two-player game
         }
     },
     playAgain: function() {
-        if (this.twoPlayers) {
+        if (this.twoPlayers) { //In a state of twoPlayers true,
             try {
-                this.currentWord = prompt("Enter a word!").toUpperCase();
+                this.currentWord = prompt("Enter a word!").toUpperCase(); //Restarts the prompt to enter a new (custom) word
             }
             catch(e) {
-                this.onePlayer();
+                this.onePlayer(); //Triggers a one-player game if cancel is pressed or there's an error
                 return;
             }
-            var letters = /^[A-Za-z]+$/;
+            var letters = /^[A-Za-z]+$/; //Defines acceptable inputs (letters only) using regex
             while (!letters.test(this.currentWord)) {
                 try {
-                    this.currentWord = prompt("Only letters please! Enter a word:").toUpperCase();
+                    this.currentWord = prompt("Only letters please! Enter a word:").toUpperCase(); //If non-letters are given, give error message
                 }
                 catch(e) {
-                    this.onePlayer();
+                    this.onePlayer(); //Triggers a one-player game if cancel is pressed or there's an error
                     return
                 }
             }
         }
-        else {
-            this.currentWord = this.words[randomInteger(0, this.words.length - 1)];
+        else { //In a state of twoPlayers false, 
+            this.currentWord = this.words[randomInteger(0, this.words.length - 1)]; //Randomly choose a new word
         }
-        this.restart();
+        this.restart(); //Restarts new game regardless of Cancel or New Two-player game
     }
 },
 
-// identify the canvas element and initialize it, draw the gallows, choose a word, and draw the blanks
+//Identifies canvas element and initializes it, draws gallows, chooses a word, and draws the blanks
 mounted: function() {
-    this.canvas = document.getElementById("board-canvas");
-    this.canvas.width = document.getElementById("board").offsetWidth;
+    this.canvas = document.getElementById("board-canvas"); //Sets location to draw canvas
+    this.canvas.width = document.getElementById("board").offsetWidth; //Sets width and height of canvas
     this.canvas.height = document.getElementById("board").offsetHeight;
-    this.ctx = this.canvas.getContext("2d");
-    this.ctx.lineWidth = 2;
-    this.drawGallows(this.ctx);
-this.currentWord = this.words[randomInteger(0, this.words.length - 1)];
-    this.makeBlanks();
+    this.ctx = this.canvas.getContext("2d"); //Sets context of the canvas
+    this.ctx.lineWidth = 2; //Sets lineWidth for draw lines
+    this.drawGallows(this.ctx); //Draws the gallows
+this.currentWord = this.words[randomInteger(0, this.words.length - 1)]; //Chooses a word
+    this.makeBlanks(); //Creates the blanks for the chosen word
 }
 });
