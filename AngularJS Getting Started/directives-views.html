@@ -1,0 +1,25 @@
+<!--File must be opened using Live Server extension in VScode to avoid the CORS policy issue. Otherwise resources won't load-->
+
+<!DOCTYPE html>
+<html ng-app="githubViewer">
+  <head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <!--Utilizes data-bindings within the JS file to display data on HTML-->
+  <body ng-controller="MainCtrl">
+    <h1>{{message}}</h1>
+    <div>{{error}}</div>
+    
+    <form name="searchUser" ng-submit="search(username)">
+      <input type="search" required placeholder="Username to find" ng-model="username" />
+      <input type="submit" value="Search">
+    </form>
+
+    <!--Imports the specified file to pull data from-->
+    <div ng-include="'d-v-userdetails.html'" ng-show="user"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="directives-views.js"></script>
+  </body>
+</html>

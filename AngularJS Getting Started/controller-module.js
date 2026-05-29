@@ -23,7 +23,7 @@ angular.module('plunker', []).controller('MainCtrl', function($scope) {
 
       //Makes asynchronous request to github to access a users data
       $http.get("https://api.github.com/users/gvanrossum")
-        .then(onUserComplete, onError); //Then method calling the callback functions above once data has been loaded
+        .then(onUserComplete, onError); //Then method runs the callback functions once data has loaded
 
       //Defines a 'person' object to show within the view
       var person = {
