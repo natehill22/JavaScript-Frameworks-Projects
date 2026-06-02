@@ -1,0 +1,8 @@
+  <!--Utilizes data-bindings within the JS file to display data on HTML-->
+  <div>
+    {{ countdown }}
+    <form name="searchUser" ng-submit="search(username)">
+      <input type="search" required placeholder="Username to find" ng-model="username" />
+      <input type="submit" value="Search">
+    </form>    
+  </div>
