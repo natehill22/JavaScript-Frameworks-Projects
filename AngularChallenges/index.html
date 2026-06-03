@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html ng-app="newApp" ng-init="num1=245;num2=308">
+  <head>
+  </head>
+
+  <body>
+    <h1>AngularJS Challenges</h1>
+    <div ng-controller="MainCtrl">
+        <p ng-bind="title"></p>
+        <div>{{person.firstName}} {{person.lastName}}</div>
+        <img ng-src="{{person.imageSrc}}" title="{{person.firstName}} {{person.lastName}}">
+        <br><br>
+        Your First Name: <input type="text" ng-model="userFirstName"><br>
+        Your Last Name: <input type="text" ng-model="userLastName"><br>
+        <br>
+        Full User Name: {{userFirstName}} {{userLastName}}
+    
+        <div>
+            <p>245 + 308 = {{ num1 + num2 }}</p>
+        </div>
+        <div>
+            <ul> <!--Loops through data to show avatar and name of all contributors to the repo-->
+                <li ng-repeat="fruit in fruits">
+                {{ fruit }}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!--Importing angular and angular-route as well as controllers and files used for routing-->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="angularJSchallenges.js"></script>
+  </body>
+
+</html>

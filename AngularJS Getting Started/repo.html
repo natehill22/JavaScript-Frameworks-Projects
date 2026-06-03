@@ -1,0 +1,17 @@
+<!--Displays the repo name and number of issues for the selected username-->
+<div>
+  <h2>{{repo.name}}</h2>
+  <div>Issues: {{repo.open_issues_count}}</div>
+  {{ error }} <!--Added space for errors should they occur-->
+  <ul> <!--Loops through data to show avatar and name of all contributors to the repo-->
+    <li ng-repeat="user in repo.contributors">
+        <image ng-src="{{user.avatar_url}}" alt="{{user.login}}"></image>
+        {{ user.login }}
+    </li>
+  </ul>
+</div>
+
+<!--Creates a Back to Search button for easier navigation-->
+<a href="#!/main">Back to Search</a>
+<!--Creates a Back to Repo's Owner button for easier navigation-->
+<a href="#!/user/{{repo.owner.login}}">Back to {{repo.owner.login}}</a>

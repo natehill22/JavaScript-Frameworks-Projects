@@ -22,6 +22,10 @@ angular.module('plunker', []).controller('MainCtrl', function($scope) {
           templateUrl: "user.html",
           controller: "UserCtrl"
         })
+        .when("/repo/:username/:reponame", {
+          templateUrl: "repo.html",
+          controller: "RepoCtrl"
+        })
         .otherwise({redirectTo:"/main"}); //If undocumented URL is given, redirect to the main page
     });
 

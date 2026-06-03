@@ -27,10 +27,27 @@ angular.module('plunker', []).controller('MainCtrl', function($scope) {
                   });
     };
 
+    var getRepoDetails = function(username, reponame) {
+      var repo;
+      var repoUrl = "https://api.github.com/repos/" + username + "/" + reponame;
+
+      //Returns a chained promise due to the asynchronous nature of the function
+      return $http.get(repoUrl)
+                  .then(function(response) { //Gets repo's details
+                      repo = response.data;
+                      return $http.get(repoUrl + "/contributors");
+                  })
+                  .then(function(response) { //Gets contributors details
+                    repo.contributors = response.data;
+                    return repo;
+                  }); //Data returned will be a list of the selected reponame's contributors 
+    };
+
     return {
       //Picks the public APIs
       getUser: getUser,
-      getRepos: getRepos
+      getRepos: getRepos,
+      getRepoDetails: getRepoDetails
     };
 
   };

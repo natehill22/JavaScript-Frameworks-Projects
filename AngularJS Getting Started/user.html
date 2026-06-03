@@ -22,11 +22,14 @@
   </thead>
   <tbody>
     <tr ng-repeat="repo in repos | orderBy:repoSortOrder">
-      <td>{{repo.name}}</td>
+      <td> <!--Creates a link for each repo name that directs users to a page showing contributors and issues-->
+        <a href="#!/repo/{{user.login}}/{{repo.name}}">
+          {{repo.name}}</a>
+      </td>
       <td>{{repo.stargazers_count | number}}</td>
       <td>{{repo.language}}</td>
     </tr>
   </tbody>
 </table>
 <!--Creates a Back to Search button for easier navigation-->
-<a href="#/main">Back to Search</a>
+<a href="#!/main">Back to Search</a>
