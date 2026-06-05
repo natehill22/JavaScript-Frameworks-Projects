@@ -163,6 +163,6 @@ function hasWon(minefield) {
 
     minesweeperModule.controller("minesweeperController", minesweeperController); //Defines controller name
 
-    //Create a way to clear all spots around it when and empty spot is clicked upon
+    //Create a way to clear all spots around an empty spot when clicked upon
     //Create a way to label uncovered spots with flags
     //Create a way to reset game after losing or winning
