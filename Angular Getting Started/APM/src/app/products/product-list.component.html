@@ -40,7 +40,11 @@
                             [style.width.px]="imageWidth"
                             [style.margin.px]="imageMargin">
                         </td>
-                        <td>{{ product.productName }}</td>
+                        <td>
+                            <a [routerLink]="['/products', product.productId]">
+                                {{ product.productName }}
+                            </a>
+                        </td>
                         <!--Adds a lowercase filter and a custom pipe that replaces the dash character with a space-->
                         <td>{{ product.productCode | lowercase | convertToSpaces:'-' }}</td>
                         <td>{{ product.releaseDate }}</td>
