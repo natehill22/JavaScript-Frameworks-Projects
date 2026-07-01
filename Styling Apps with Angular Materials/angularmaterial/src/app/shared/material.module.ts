@@ -41,42 +41,42 @@ import { MatTableModule } from '@angular/material/table';
 @NgModule({
   declarations: [],
   exports: [
-    MatAutocompleteModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatRadioModule,
-    MatSelectModule,
-    MatSliderModule,
-    MatSlideToggleModule,
-    MatMenuModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    MatCardModule,
-    MatDividerModule,
-    MatExpansionModule,
-    MatGridListModule,
-    MatListModule,
-    MatStepperModule,
-    MatTabsModule,
-    MatTreeModule,
-    MatButtonModule,
-    MatButtonToggleModule,
-    MatBadgeModule,
-    MatChipsModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MatProgressBarModule,
-    MatRippleModule,
-    MatBottomSheetModule,
-    MatDialogModule,
-    MatSnackBarModule,
-    MatTooltipModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatTableModule
+    MatAutocompleteModule, //Allows autocomplete dropdown menu
+    MatCheckboxModule, //Allows NG Material checkbox
+    MatDatepickerModule, //Allows NG Material date picker, toggle buttons, calender popup, etc.
+    MatNativeDateModule, //Allows NG Material to interact with Date objects
+    MatFormFieldModule, //Allows NG Material to created stlyed input fields
+    MatInputModule, //Allows inputs and textareas to gel with their wrapper
+    MatRadioModule, //Allows NG Material radio button components
+    MatSelectModule, //Allows NG Material dropdown selections
+    MatSliderModule, //Allows interactive sliders
+    MatSlideToggleModule, //Allows switches/toggles
+    MatMenuModule, //Allows dropdown/pop-up menus
+    MatSidenavModule, //Allows NG Material sidebars or drawers
+    MatToolbarModule, //Allows NG Material toolbars
+    MatCardModule, //Allows NG Material cards
+    MatDividerModule, //Allows NG Material collapsible sidebars
+    MatExpansionModule, //Allows NG Material expansion panels
+    MatGridListModule, //Allows NG Material grids
+    MatListModule, //Allows NG Material lists
+    MatStepperModule, //Allows multi-step workflows
+    MatTabsModule, //Allows NG Material tab components
+    MatTreeModule, //Allows heirarchical tree structures
+    MatButtonModule, //Allows NG Material buttons
+    MatButtonToggleModule, //Allows NG Material button toggles
+    MatBadgeModule, //Allows NG Material notification and status indicators
+    MatChipsModule, //Allows NG Material chip UI elements
+    MatIconModule, //Allows NG Material icons
+    MatProgressSpinnerModule, //Allows NG Material progress spinners
+    MatProgressBarModule, //Allows NG Material progress bars
+    MatRippleModule, //Allows for ripple effect
+    MatBottomSheetModule, //Allows interactive panels from screen bottom
+    MatDialogModule, //Allows modal dialogs
+    MatSnackBarModule, //Allows NG Material snackbars
+    MatTooltipModule, //Allows NG Material tooltips
+    MatPaginatorModule, //Allows NG Material paginators
+    MatSortModule, //Allows NG Material sort
+    MatTableModule //Allows NG Material tables
   ]
 })
 export class MaterialModule { }

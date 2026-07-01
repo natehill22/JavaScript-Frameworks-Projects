@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-buttons',
+  //Shows a button with a face icon and a checkbox that can be checked
   template: `
   <button mat-button>
     <mat-icon>face</mat-icon>

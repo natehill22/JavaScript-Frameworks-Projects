@@ -1,15 +1,15 @@
-<div *ngIf="!user">
+<div *ngIf="!user"> <!--Show a spinner before users are loaded, or if no users-->
     <mat-spinner></mat-spinner>
 </div>
 <div *ngIf="user">
-    <mat-card>
+    <mat-card> <!--Shows user information on cards-->
         <mat-card-header>
             <mat-icon mat-card-avatar svgIcon="{{ user.avatar }}"></mat-icon>
             <mat-card-title>
                 <h2>{{ user.name }}</h2>
             </mat-card-title>
-            <mat-card-subtitle>
-                Birthday {{ user.birthDate | date: 'd LLLL' }}
+            <mat-card-subtitle> <!--Shows birthdate and defines the display format-->
+                Birthday {{ user.birthDate | date: 'd LLLL' }} 
             </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>

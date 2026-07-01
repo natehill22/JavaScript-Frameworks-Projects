@@ -1,14 +1,14 @@
 <div class="mat-elevation-z8">
     <mat-form-field>
         <mat-label>Filter</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Filter" #input>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Filter" #input> <!--Runs applyFilter function on every key-up-->
     </mat-form-field>
 
-  <table mat-table [dataSource]="dataSource" matSort>
+  <table mat-table [dataSource]="dataSource" matSort> <!--Populates the notes with the data-->
 
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
-      <td mat-cell *matCellDef="let note"> {{note.id}} </td>
+      <td mat-cell *matCellDef="let note"> {{note.id}} </td> <!--Giving a local variable to more easily pull note data-->
     </ng-container>
 
     <ng-container matColumnDef="title">
@@ -21,6 +21,7 @@
       <td mat-cell *matCellDef="let note"> {{note.date | date: 'yyyy-MM-dd'}} </td>
     </ng-container>
 
+    <!--Setting header row and display configuration for the Notes table-->
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
@@ -30,6 +31,7 @@
     </tr>
   </table>
 
+  <!--Paginator settings-->
   <mat-paginator [pageSize]="2" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 
 </div>
