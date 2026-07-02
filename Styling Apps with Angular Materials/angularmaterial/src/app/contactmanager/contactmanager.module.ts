@@ -39,7 +39,7 @@ const routes: Routes = [
   imports: [
     CommonModule, //Gives access to built-in structural directives
     HttpClientModule, //Provides tools to make HTTP requests to backend APIs
-    MaterialModule, //Allows Materials components, styles, and directives 
+    MaterialModule, //Allows form materials components, styles, and directives 
     FlexLayoutModule, //Provides API to design layouts using CSS flexbox and grid
     FormsModule, //Enables template-driven forms
     ReactiveFormsModule, //Provides a model-driven approach to handling forms
