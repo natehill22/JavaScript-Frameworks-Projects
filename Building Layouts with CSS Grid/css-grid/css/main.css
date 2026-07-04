@@ -4,17 +4,17 @@ body, html {height: 100%; }
 body {
     margin:0;
     font-family: 'Montserrat', sans-serif;
-    display: grid;
-    grid-template-rows: auto 50px;
-    grid-template-columns: 12% auto;
-    grid-template-areas: 
+    display: grid; /*Over-arching grid for the entire page*/
+    grid-template-rows: auto 50px; /*Configurations for parent grid*/
+    grid-template-columns: 12% auto; /*Configurations for parent grid*/
+    grid-template-areas: /*Configurations for parent grid*/
         "sidebar right"
         "footer footer";
 }
 a { text-decoration: none; }
-ul { list-style-type: none; float: right; }
+ul { list-style-type: none; float: right; } /*Pushes nav content to the right side of the row*/
 ul li {
-    display: inline;
+    display: inline; /*Shows in line as opposed to stacked*/
 }
 ul li a { color: #fff; padding: 15px; }
 
@@ -30,17 +30,17 @@ ul li a { color: #fff; padding: 15px; }
 
 header {
     background-color: #41C7C7;
-
-    display: grid;
-    grid-template-columns: [logo-start] fit-content(20%) [nav-start] auto [nav-end];
+    grid-area: head; /*Defines the child's name within the parent (main) grid*/
+    display: grid; /*Makes it a grid container (within the parent grid)*/
+    grid-template-columns: [logo-start] fit-content(20%) [nav-start] auto [nav-end]; /*Fits content so it doesn't cross container boundaries AND giving explicit column names*/
 }
 
 section#hero {
     background-color: #36ADAD;
     padding: 2em;
     border-top: 5px solid #2EA0A0;
-
-    display: grid;
+    grid-area: hero; /*Defines the child's name within the parent (main) grid*/
+    display: grid; /*Sets a grid within this section configured to have 2 equally sized column*/
     grid-template-columns: repeat(2, auto);
 }
 
@@ -66,19 +66,188 @@ img {
 }
 
 .sidebar {
-    grid-area: sidebar;
+    grid-area: sidebar; /*Defines the child's name within the parent grid*/
     background: #1C9090;
     color: #fff;
     padding: 1em;
 }
 
 .main {
-    grid-area: right;
-    grid-template-rows: 51px fit-content(30%);
-    display: grid;
+    grid-area: right; /*Defines the child's name within the parent grid*/
+    grid-template-rows: 51px fit-content(30%) 40% auto;
+    display: grid; /*Sets a grid within this section configured to have 4 rows (sizes above)*/
+    grid-template-areas: 
+        "head"
+        "hero"
+        "invention"
+        "features"
 }
 
 footer {
-    grid-area: footer;
-    background: lightgray;
+    grid-area: footer; /*Defines the child's name within the parent grid*/
+    background-color: #41C7C7;
+}
+
+footer p {
+    color: #fff;
+    text-align: center;
+}
+
+#features {
+    display: grid; /*Sets a grid within this section configured to have 5 equally size columns*/
+    grid-template-columns: repeat(5, auto);
+    text-align: center;
+    grid-area: features; /*Defines the child's name within the parent (main) grid*/
+}
+
+#features i {
+    font-size: 2em;
+}
+
+ul#features {
+    margin: 0; padding: 0;
+}
+
+ul#features li {
+    background-color: lightgray;
+    padding: 1em;
+    align-self: start; /*Aligns the feature lis against the start edge of the cross axis*/
+}
+
+ul#features li p {
+    color: #4C4C4C;
+}
+
+/*Targets each individiual feature child*/
+ul#features li:nth-child(1) {
+    background-color: #E6E6E6;
+}
+
+ul#features li:nth-child(2) {
+    background-color: #D3D3D3;
+}
+
+ul#features li:nth-child(3) {
+    background-color: #CACACA;
+}
+
+ul#features li:nth-child(4) {
+    background-color: #E6E6E6;
+}
+
+ul#features li:nth-child(5) {
+    background-color: #D3D3D3;
+}
+
+section#info {
+    background-color: #F2F2F2;
+    padding: 2em;
+    grid-area: invention; /*Defines the child's name within the parent (main) grid*/
+    display: grid; /*Sets a grid within this section configured to have 2 columns (the first larger than the following)*/
+    grid-template-columns: 1.5fr 1fr;
+}
+
+#mountain-vector {
+    width: 200px;
+    align-self: center;
+}
+
+/*Tablet rendering*/
+@media screen and (max-width: 60em) {
+    .sidebar {
+        display: none; /*Removes sidebar content*/
+    }
+
+    body {
+        min-height: 100vh;
+        grid-template-columns: 1fr; /*Removes empty sidebar column*/
+        grid-template-areas: /*Configurations for tablet parent grid*/
+            "right"
+            "footer";
+    }
+
+    .main {
+        grid-area: right; /*Defines the child's name within the parent grid*/
+        grid-template-rows: repeat(4, auto);
+        display: grid; /*Sets a grid within this section configured to have 4 equally-sized rows*/
+        grid-template-areas: /*Configurations for grid*/
+            "head"
+            "hero"
+            "features"
+            "invention"     
+    }
+
+    #features {
+        display: grid; /*Sets a grid within this section configured to be 2 columns wide and 3 rows long*/
+        grid-template-columns: repeat(2, auto);
+        grid-template-rows: repeat(3, auto);
+    }
+
+    ul#features li {
+        align-self: auto; /*Fills the container size*/
+    }
+
+    ul#features li:nth-child(5) {
+        grid-column: 1 / span 2; /*Final child fills the space of 2 columns*/
+    }
+}
+
+@media screen and (max-width: 40em) {
+    
+    .main {
+        grid-template-rows: repeat(4, auto); /*Sets a grid within this section configured to have 4 equally-sized rows*/
+        grid-template-areas: /*Configurations for mobile parent grid*/
+            "head"
+            "hero"
+            "invention" 
+            "features" 
+    }
+
+    header {
+        grid-template-columns: auto; /*Sets a grid within this section configured to have 2 equally-sized rows in 1 column*/
+        grid-template-rows: repeat(2, auto);
+    }
+
+    #logo {
+        margin-left: 0;
+    }
+
+    nav ul {
+        float: none;
+        padding: 0; margin: 0;
+        width: 100%;
+    }
+
+    nav ul li a {
+        width: calc(25% - 35px); /*Sets the links equi-distant apart*/
+        display: inline-block;
+        font-size: .9em;
+    }
+
+    section#hero, section#info {
+        grid-template-columns: auto; /*Fills the column's space*/
+        text-align: center; /*Centers text*/
+    }
+
+    h1, h2 {
+        font-size: 1.2em;
+    }
+
+    #mountain {
+        width: 100px;
+        height: 100px;
+    }
+
+    #content p, #content2 p {
+        font-size: .9em;
+    }
+
+    #features {
+        grid-template-columns: repeat(2, auto); /*Sets a grid within this section configured to have 4 equally-sized rows in 2 equally-sized columns*/
+        grid-template-rows: repeat(4, auto);
+    }
+
+    ul#features li:nth-child(1), ul#features li:nth-child(2) {
+        grid-column: 1 / span 2; /*First, second, and fifth child fills the space of 2 columns*/
+    }
 }
