@@ -1,0 +1,32 @@
+<div class="score-board">
+  <div class="badge" id="user-label">user : {{userSelected()}}</div>
+  <div class="badge" id="comp-label">comp : {{compSelected()}}</div>
+  <span id="user-score">{{userScore()}}</span>:<span id="comp-score">{{compScore()}}</span>
+</div>
+
+<div class="result">
+  <!--Modern Angular conditional to only show result once processing has completed-->
+  @if (status() && status() !== 'processing') {
+    <p>{{resultMessage()}}</p>
+  }
+</div>
+
+<div class="choices">
+  <!--Disables click events whenever processing or showing endgame values. Otherwise, they're functional-->
+  <div class="choice" id="rock" [style.pointer-events]="status() ? 'none' : 'auto'">
+    <img src="rock.png" alt="handrock" (click)='userPick("rock")'>
+  </div>
+  <div class="choice" id="paper" [style.pointer-events]="status() ? 'none' : 'auto'">
+    <img src="paper.png" alt="handpaper" (click)='userPick("paper")'>
+  </div>
+  <div class="choice" id="scissors" [style.pointer-events]="status() ? 'none' : 'auto'">
+    <img src="scissors.png" alt="handscissors"(click)='userPick("scissors")'>
+  </div>
+</div>
+
+<!--Modern Angular conditional to show action message only when waiting for an input. Otherwise 'Wait' shows-->
+@if(!status()) {
+  <p id="action-message">You Can Make Your Move</p>
+} @else {
+  <p id="action-message">Wait...</p>
+}
