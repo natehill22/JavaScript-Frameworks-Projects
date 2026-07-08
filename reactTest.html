@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+   <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+   <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+   <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <body>
+
+        <div id="mydiv"></div>
+
+        <script type="text/babel">
+            class Hello extends React.Component { //Declares a new JS class 'Hello' and signifies that it inherits from React.Component (this grants the Hello class access to all the functionalities provided by React for building components including state and lifecycle methods). 
+                render() { //This method is mandatory for class components. It returns the UI elements to be displayed; in this case, it's some text in an h1 heading
+                    return <h1>Hello World!</h1>
+                }
+            }
+
+            ReactDOM.render(<Hello />, document.getElementById("mydiv")) //Renders components or React elements into the DOM. In this case, it's the Hello class upon the 'mydiv' ID in the HTML
+        </script>
+    </body>
+</html>
+
