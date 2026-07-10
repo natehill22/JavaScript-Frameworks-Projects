@@ -1,4 +1,6 @@
+/*Dont' need to worry about overrides due to using a CSS module, which gives each element its own unique hash*/
 .container {
+  /*Defines 5 color variables to be used later*/
   --spectrum1: #ff598a;
   --spectrum2: #de56e8;
   --spectrum3: #b36bff;
@@ -11,6 +13,8 @@
   padding: 1em 1em 2em 1em;
   background: #2b283d;
 }
+
+/*Tablet/mobile rendering adjustment*/
 @media (min-width: 800px) {
   .container {
     font-size: 2.25em;
@@ -39,6 +43,7 @@
   margin: 0.15em;
   border: 1px solid black;
 }
+/*Places a white border around the textbox*/
 .email:focus {
   outline: 2px solid #fff;
   outline-offset: 0.15em;
@@ -58,25 +63,25 @@
   border: 0;
   cursor: pointer;
   text-transform: uppercase;
-  transition: all 300ms;
+  transition: all 300ms; /*Animates the 50-degree rotation difference over 300ms*/
   height: 0;
   width: 0;
   font-size: 0;
   translate: -50%;
-  rotate: 45deg;
+  rotate: 45deg; /*Starts hidden and turned to a 45 degree tilt*/
   padding: 0;
   border-bottom: 0;
   outline: none;
 }
 .submitActive {
-  composes: submit;
+  composes: submit; /*Applies all CSS rules in .submit class to the current class*/
   height: auto;
   width: auto;
   font-size: 1em;
   translate: -50% 50%;
-  rotate: -5deg;
+  rotate: -5deg; /*Button becomes visible and changes its angle to -5 degrees*/
   padding: 0.25em 1em;
-  border-bottom: 3px solid var(--spectrum5);
+  border-bottom: 3px solid var(--spectrum5); /*Blue color on bottom border*/
 }
 .submitActive:focus {
   outline: 2px solid #fff;
@@ -84,9 +89,9 @@
 }
 .submitActive:focus,
 .submitActive:hover {
-  border-bottom-color: var(--spectrum1);
-  rotate: 0deg;
-  scale: 1.2;
+  border-bottom-color: var(--spectrum1); /*Alter bottom border color to pink*/
+  rotate: 0deg; /*Straighten rotation*/
+  scale: 1.2; /*Correct size*/
 }
 
 .spectrum {
@@ -102,13 +107,13 @@
 
 .bar {
   height: 0.5em;
-  animation: jitter 350ms ease-out infinite alternate;
+  animation: jitter 350ms ease-out infinite alternate; /*Loops jitter animation over 350ms. It plays back and forth and slows down at the end of each cycle*/
   width: 20%;
   transform-origin: bottom;
   transition: all 1s;
 }
 .barActive {
-  composes: bar;
+  composes: bar; /*Applies all CSS rules in .bar class to the current class*/
   height: 100%;
 }
 .bar:nth-child(1n) {
@@ -129,8 +134,9 @@
 }
 .bar:nth-child(5n) {
   background: var(--spectrum5);
-  animation-delay: 200ms;
+  animation-delay: 200ms; /*Having incrementing animation delays for all elements gives a bouncing look*/
 }
+/*Jitter animation defined*/
 @keyframes jitter {
   0% {
     transform: scaleY(1);
