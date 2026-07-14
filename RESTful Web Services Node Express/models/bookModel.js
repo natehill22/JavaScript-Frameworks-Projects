@@ -1,8 +1,9 @@
 const mongoose = require('mongoose'); //Imports mongoose package
 
-const { Schema } = mongoose;
+const { Schema } = mongoose; //Pulls the Schema constructor out of the mongoose object
 
-const bookModel = new Schema(
+//Creates new db blueprint called bookModel, which it uses to guide data consistency
+const bookModel = new Schema( 
   {
     title: { type: String },
     author: { type: String },
@@ -11,4 +12,4 @@ const bookModel = new Schema(
   }
 );
 
-module.exports = mongoose.model('Book', bookModel);
+module.exports = mongoose.model('Book', bookModel); //Turns the blueprint layout into an exported model to be used by other files

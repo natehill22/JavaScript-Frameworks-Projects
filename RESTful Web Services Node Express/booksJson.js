@@ -1,3 +1,4 @@
+//Data to be loaded into mongoDB
 db.books.insert([
 {
 	title: 'War and Peace',
