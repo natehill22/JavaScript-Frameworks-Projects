@@ -1,7 +1,7 @@
 .tile {
     width: 75px;
     height: 75px;
-    border: solid 10px #3355ff;
+    border: solid 10px #5B026B;
     border-radius: 100%;
     background-color: white;
 }
@@ -13,10 +13,10 @@
     background-color: gray;
 }
 
-.yellow {
-    background-color: #ffff33;
+.green {
+    background-color: #36bd1d;
 }
 
-.red {
-    background-color: #ff010b;
+.cyan {
+    background-color: #00FFFF;
 }

@@ -9,7 +9,7 @@ export default class Tile extends React.PureComponent<Props> {
         //Extracts variables from incoming properties. If onClick is empty, an empty function is run
         const {id, chipType, onClick = () => {} } = this.props;
         //Adds CSS classes (red if chipType is red, yellow otherwise)
-        const chipCssClass = classNames(styles.chip, chipType === "red" ? styles.red : styles.yellow);
+        const chipCssClass = classNames(styles.chip, chipType === "cyan" ? styles.cyan : styles.green);
 
         return (
             //When tile is clicked, onClick function is triggered and passes the tile's id

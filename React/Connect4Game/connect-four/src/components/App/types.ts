@@ -1,9 +1,9 @@
-//Defines the ChipsPosition object (a dictionary for each position that allows values of red, yellow, or empty)
+//Defines the ChipsPosition object (a dictionary for each position that allows values of cyan, green, or empty)
 export interface ChipsPositions {
     [key: string]: Player;
 }
 
-export type Player = "red" | "yellow" | "";
+export type Player = "cyan" | "green" | "";
 //Defines Props as needing the number of columns and rows in order to initialize
 export interface Props {
     columns: number;
