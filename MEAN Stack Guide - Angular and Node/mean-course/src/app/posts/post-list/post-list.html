@@ -1,0 +1,17 @@
+<div style="background: yellow; color: black; padding: 15px; z-index: 9999; position: relative;">
+  <h3>Debug Dashboard</h3>
+  <p>Array Length: {{ posts.length }}</p>
+  <ul>
+    <li *ngFor="let p of posts">Raw Post: {{ p.title }} - {{ p.content }}</li>
+  </ul>
+</div>
+
+<mat-accordion multi="true" *ngIf="posts.length > 0">
+    <mat-expansion-panel *ngFor="let post of posts">
+        <mat-expansion-panel-header>
+            {{ post.title }}
+        </mat-expansion-panel-header>
+        <p>{{ post.content }}</p>
+    </mat-expansion-panel>
+</mat-accordion>
+<p class="info-text mat-body-1" *ngIf="posts.length === 0">No Posts added</p>
