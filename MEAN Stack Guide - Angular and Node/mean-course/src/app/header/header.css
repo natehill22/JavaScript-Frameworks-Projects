@@ -1,0 +1,22 @@
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+mat-toolbar {
+  background-color: #ffd7f5 !important; 
+}
+
+/* Target Angular Material button when it receives the active class */
+a.mat-mdc-button.active-link {
+  background-color: rgba(255, 64, 129, 0.15) !important; /* Subtle accent background highlight */
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
