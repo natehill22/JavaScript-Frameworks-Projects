@@ -20,9 +20,13 @@
     "@angular/material": "^22.0.6",
     "@angular/platform-browser": "^22.0.0",
     "@angular/router": "^22.0.0",
+    "bcrypt": "^6.0.0",
     "body-parser": "^2.3.0",
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.8.0",
+    "mongoose-unique-validator": "^6.1.1",
+    "multer": "^2.2.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
