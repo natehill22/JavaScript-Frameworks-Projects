@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
@@ -6,11 +6,12 @@ import { MatCardModule } from "@angular/material/card";
 import { MatInputModule } from "@angular/material/input";
 import { ActivatedRoute, ParamMap } from "@angular/router";
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
+import { Subscription } from "rxjs";
+import { AuthService } from "../../auth/auth.service";
 
 import { PostsService } from "../posts.service";
 import { Post } from "../post.model";
 import { mimeType } from "./mime-type.validator";
-
 
 @Component({
     selector: 'app-post-create',
@@ -18,7 +19,7 @@ import { mimeType } from "./mime-type.validator";
     imports: [CommonModule, ReactiveFormsModule, MatInputModule, MatCardModule, MatButtonModule, MatProgressSpinner],
     styleUrls: ['./post-create.css']
 })
-export class PostCreateComponent implements OnInit {
+export class PostCreateComponent implements OnInit, OnDestroy {
     enteredTitle = '';
     enteredContent = '';
     post: Post | undefined;
@@ -27,13 +28,19 @@ export class PostCreateComponent implements OnInit {
     imagePreview!: string;
     private mode = 'create';
     private postId: string = '';
+    private authStatusSub!: Subscription;
     
 
-    constructor(public postsService: PostsService, public route: ActivatedRoute, private cdRef: ChangeDetectorRef) {
+    constructor(public postsService: PostsService, public route: ActivatedRoute, private authService: AuthService, private cdRef: ChangeDetectorRef) {
         console.log("Create Component Service ID:", (postsService as any).__proto__);
     }
 
     ngOnInit(): void {
+        this.authStatusSub = this.authService.getAuthStatusListener().subscribe(
+            authStatus => {
+                this.isLoading = false;
+            }
+        );
         this.form = new FormGroup({
             'title': new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]}),
             'content': new FormControl(null, {validators: [Validators.required]}),
@@ -48,6 +55,7 @@ export class PostCreateComponent implements OnInit {
                 this.postsService.getPost(this.postId).subscribe(postData => {
                     this.isLoading = false;
                     this.post = {id: postData._id, title: postData.title, content: postData.content, imagePath: postData.imagePath, creator: postData.creator};
+                    this.imagePreview = postData.imagePath;
                     this.form.setValue({'title': this.post.title, 'content': this.post.content, 'image': this.post.imagePath});
                     this.enteredTitle = this.post.title;
                     this.enteredContent = this.post.content;
@@ -81,5 +89,9 @@ export class PostCreateComponent implements OnInit {
             this.postsService.updatePost(this.postId, this.form.value.title, this.form.value.content, this.form.value.image)
         }
         this.form.reset();
+    }
+
+    ngOnDestroy(): void {
+        this.authStatusSub.unsubscribe();
     }
 }
