@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
@@ -10,42 +10,49 @@ import { Post } from './post.model';
 const BACKEND_URL = environment.apiUrl + "/posts/";
 
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class PostsService {
-    private posts: Post[] = [];
-    private postsUpdated = new BehaviorSubject<{posts: Post[], postCount: number}>({
-        posts: [],
-        postCount: 0
+    private http = inject(HttpClient);
+    private router = inject(Router);
+
+    //Track the active pagination params as Signals
+    private paginationParams = signal({ postsPerPage: 2, currentPage: 1 });
+
+    private postsResource = rxResource({
+        params: () => this.paginationParams(),
+        stream: ({ params }) => {
+            const queryParams = `?pagesize=${params.postsPerPage}&page=${params.currentPage}`;
+            return this.http.get<{ message: string, posts: any[]; maxPosts: number }>(BACKEND_URL + queryParams).pipe(
+                map((postData) => ({
+                    posts: postData.posts.map((post) => ({
+                        title: post.title,
+                        content: post.content,
+                        id: post._id,
+                        imagePath: post.imagePath,
+                        creator: post.creator
+                    })),
+                    maxPosts: postData.maxPosts
+                }))
+            );
+        }
     });
 
-    constructor(private http: HttpClient, private router: Router) {}
+    //Expose ready-to-use signals for components to consume
+    posts = computed(() => this.postsResource.value()?.posts ?? []);
+    totalPosts = computed(() => this.postsResource.value()?.maxPosts ?? 0);
+    isLoading = this.postsResource.isLoading;
 
+    //Updates pagination signals, triggering auto-refetch
     getPosts(postsPerPage: number, currentPage: number) {
-        const queryParams = `?pagesize=${postsPerPage}&page=${currentPage}`;
-        this.http.get<{message: string, posts: any, maxPosts: number }>(BACKEND_URL + queryParams)
-        .pipe(map((postData) => {
-            return { posts: postData.posts.map((post: any) => {
-                return {
-                    title: post.title,
-                    content: post.content,
-                    id: post._id,
-                    imagePath: post.imagePath,
-                    creator: post.creator
-                };
-            }), maxPosts: postData.maxPosts };
-        }))
-        .subscribe((transformedPostData) => {
-            this.posts = transformedPostData.posts;
-            this.postsUpdated.next({ posts: [...this.posts], postCount: transformedPostData.maxPosts});
-        });
+        this.paginationParams.set({ postsPerPage, currentPage });
     }
 
-    getPostUpdateListener() {
-        return this.postsUpdated.asObservable();
+    refreshPosts() {
+        this.postsResource.reload();
     }
 
     getPost(id: string) {
-        return this.http.get<{_id: string, title: string, content: string, imagePath: string, creator: string }>(BACKEND_URL + id);
+        return this.http.get<{_id: string; title: string; content: string; imagePath: string; creator: string }>(BACKEND_URL + id);
     }
 
     addPost(title: string, content: string, image: File) {
@@ -55,9 +62,7 @@ export class PostsService {
         postData.append("image", image, title);
         this.http
             .post<{ message: string; post: Post }>(BACKEND_URL, postData)
-            .subscribe(responseData => {
-                this.router.navigate(["/"]);
-            });
+            .subscribe(() => this.router.navigate(["/"])); 
     }
 
     updatePost(id: string, title: string, content: string, image: File | string) {
@@ -72,13 +77,10 @@ export class PostsService {
             postData = {id: id, title: title, content: content, imagePath: image, creator: ''};
         }
         this.http.put(BACKEND_URL + id, postData)
-        .subscribe(response => {
-            this.router.navigate(["/"]);
-        });
+        .subscribe(() => this.router.navigate(["/"]));
     }
 
     deletePost(postId: string) {
-        return this.http
-        .delete(BACKEND_URL + postId);
+        return this.http.delete(BACKEND_URL + postId);
     }
 }

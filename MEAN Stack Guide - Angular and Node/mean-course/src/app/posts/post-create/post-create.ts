@@ -1,97 +1,116 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { Component, signal, inject, input, effect } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatInputModule } from "@angular/material/input";
-import { ActivatedRoute, ParamMap } from "@angular/router";
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
-import { Subscription } from "rxjs";
-import { AuthService } from "../../auth/auth.service";
+import { toSignal } from "@angular/core/rxjs-interop";
 
 import { PostsService } from "../posts.service";
+import { AuthService } from "../../auth/auth.service";
 import { Post } from "../post.model";
 import { mimeType } from "./mime-type.validator";
 
 @Component({
     selector: 'app-post-create',
     templateUrl: './post-create.html',
-    imports: [CommonModule, ReactiveFormsModule, MatInputModule, MatCardModule, MatButtonModule, MatProgressSpinner],
+    imports: [ReactiveFormsModule, MatInputModule, MatCardModule, MatButtonModule, MatProgressSpinner],
     styleUrls: ['./post-create.css']
 })
-export class PostCreateComponent implements OnInit, OnDestroy {
-    enteredTitle = '';
-    enteredContent = '';
-    post: Post | undefined;
-    isLoading = false;
-    form!: FormGroup;
-    imagePreview!: string;
-    private mode = 'create';
-    private postId: string = '';
-    private authStatusSub!: Subscription;
+export class PostCreateComponent {
+    public postsService = inject(PostsService);
+    private authService = inject(AuthService);
+
+    //Route params automatically bind to this signal if enabled 
+    postId = input<string | undefined>();
+
+    //Component State Signals
+    isLoading = signal<boolean>(false);
+    imagePreview = signal<string | null>(null);
+    post = signal<Post | undefined>(undefined);
+    mode = signal<'create' | 'edit'>('create');
+
+    //Form initialization
+    form = new FormGroup({
+        'title': new FormControl<string | null>(null, {validators: [Validators.required, Validators.minLength(3)] }),
+        'content': new FormControl<string | null>(null, {validators: [Validators.required] }),
+        'image': new FormControl<File | string | null>(null, {validators: [Validators.required], asyncValidators: [mimeType] })
+    });
     
+    //Handle authentication updates without manual subscriptions
+    private authStatusSignal = toSignal(this.authService.getAuthStatusListener());
 
-    constructor(public postsService: PostsService, public route: ActivatedRoute, private authService: AuthService, private cdRef: ChangeDetectorRef) {
-        console.log("Create Component Service ID:", (postsService as any).__proto__);
-    }
-
-    ngOnInit(): void {
-        this.authStatusSub = this.authService.getAuthStatusListener().subscribe(
-            authStatus => {
-                this.isLoading = false;
+    constructor() {
+        //Automatically turns off loader when auth status updates
+        effect(() => {
+            if (this.authStatusSignal() !== undefined) {
+                this.isLoading.set(false);
             }
-        );
-        this.form = new FormGroup({
-            'title': new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]}),
-            'content': new FormControl(null, {validators: [Validators.required]}),
-            'image': new FormControl (null, {validators: [Validators.required], asyncValidators: [mimeType]})
         });
-        this.route.paramMap.subscribe((paramMap: ParamMap) => {
-            if (paramMap.has('postId')) {
-                this.mode = 'edit';
-                this.postId = paramMap.get('postId') ?? '';
-                this.isLoading = true;
-                //Fetches post data asynchronously from server
-                this.postsService.getPost(this.postId).subscribe(postData => {
-                    this.isLoading = false;
-                    this.post = {id: postData._id, title: postData.title, content: postData.content, imagePath: postData.imagePath, creator: postData.creator};
-                    this.imagePreview = postData.imagePath;
-                    this.form.setValue({'title': this.post.title, 'content': this.post.content, 'image': this.post.imagePath});
-                    this.enteredTitle = this.post.title;
-                    this.enteredContent = this.post.content;
+
+        //Automatically reacts and fetches data whenever the postId input signal changes
+        effect(() => {
+            const currentPostId = this.postId();
+            if (currentPostId) {
+                this.mode.set('edit');
+                this.isLoading.set(true);
+
+                this.postsService.getPost(currentPostId).subscribe({
+                    next: (postData) => {
+                        this.isLoading.set(false);
+                        const mappedPost: Post = {
+                            id: postData._id,
+                            title: postData.title,
+                            content: postData.content,
+                            imagePath: postData.imagePath,
+                            creator: postData.creator
+                        };
+                        this.post.set(mappedPost);
+                        this.imagePreview.set(postData.imagePath);
+
+                        this.form.setValue({
+                            title: mappedPost.title,
+                            content: mappedPost.content,
+                            image: mappedPost.imagePath
+                        });
+                    },
+                    error: () => this.isLoading.set(false)
                 });
             } else {
-                this.mode = 'create';
-                this.postId = '';
+                this.mode.set('create');
+                this.post.set(undefined);
+                this.imagePreview.set(null);
+                this.form.reset();
             }
         });
     }
 
     onImagePicked(event: Event) {
-        const file = (event.target as HTMLInputElement).files![0];
-        this.form.patchValue({image: file});
+        const files = (event.target as HTMLInputElement).files;
+        if (!files || files.length === 0) return;
+
+        const file = files[0];
+        this.form.patchValue({ image: file });
         this.form.get('image')?.updateValueAndValidity();
+
         const reader = new FileReader();
         reader.onload = () => {
-            this.imagePreview = reader.result as string;
+            this.imagePreview.set(reader.result as string);
         };
         reader.readAsDataURL(file);
     }
 
     onSavePost() {
-        if (this.form.invalid) {
-            return;
-        }
-        this.isLoading = true;
-        if (this.mode === 'create') {
-            this.postsService.addPost(this.form.value.title, this.form.value.content, this.form.value.image);
+        if (this.form.invalid) return;
+        
+        this.isLoading.set(true);
+        const formValue = this.form.value;
+
+        if (this.mode() === 'create') {
+            this.postsService.addPost(formValue.title!, formValue.content!, formValue.image! as File);
         } else {
-            this.postsService.updatePost(this.postId, this.form.value.title, this.form.value.content, this.form.value.image)
+            this.postsService.updatePost(this.postId()!, formValue.title!, formValue.content!, formValue.image!);
         }
         this.form.reset();
-    }
-
-    ngOnDestroy(): void {
-        this.authStatusSub.unsubscribe();
     }
 }

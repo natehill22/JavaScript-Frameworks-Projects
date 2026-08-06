@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { Injectable, inject, signal, computed } from "@angular/core";
 import { Router } from "@angular/router";
-import { BehaviorSubject } from "rxjs";
+import { Subject } from "rxjs"; //Kept only as a simple fallback compatibility layer
 
 import { AuthData } from "./auth-data.model";
 import { environment } from '../../environments/environment';
@@ -11,66 +11,90 @@ const BACKEND_URL = environment.apiUrl + "/user/";
 @Injectable({ providedIn: 'root' })
 
 export class AuthService {
-    private isAuthenticated = false;
-    private token: string = '';
+    private http = inject(HttpClient);
+    private router = inject(Router);
+
+    //Single source of truth state using a Signal
+    private authState = signal<{
+        token: string;
+        isAuthenticated: boolean;
+        userId: string | null;
+    }>({
+        token: '',
+        isAuthenticated: false,
+        userId: null
+    });
+
     private tokenTimer: any;
-    private userId!: string;
-    private authStatusListener = new BehaviorSubject<boolean>(false);
 
-    constructor(private http: HttpClient, private router: Router) {}
+    //Legacy RxJS compatibility stream for components using toSignal()
+    private authStatus$ = new Subject<boolean>();
 
-    getToken() {
-        if (!this.token) {
-            this.token = localStorage.getItem('token') || '';
+    //Expose clean, read-only Signals to the application
+    token = computed(() => {
+        const currentToken = this.authState().token;
+        if (!currentToken) {
+            return localStorage.getItem('token') || '';
         }
-        return this.token;
+        return currentToken;
+    });
+
+    isAuthenticated = computed(() => this.authState().isAuthenticated);
+    userId = computed(() => this.authState().userId ?? '');
+
+    //Synchronized methods to maintain compatibility with your components' current toSignal() calls
+    getToken() {
+        return this.token();
     }
 
     getIsAuth() {
-        return this.isAuthenticated;
+        return this.isAuthenticated();
     }
 
     getUserId() {
-        return this.userId;
+        return this.userId();
     }
 
     getAuthStatusListener() {
-        return this.authStatusListener.asObservable();
+        return this.authStatus$.asObservable();
     }
 
     createUser(email: string, password: string) {
-        const authData: AuthData = {email: email, password: password};
+        const authData: AuthData = { email, password };
         this.http.post(BACKEND_URL + "signup", authData)
-        .subscribe(() => {
-            this.router.navigateByUrl("/");
-        }, error => {
-            this.authStatusListener.next(false);
+        .subscribe({
+            next: () => this.router.navigateByUrl("/"),
+            error: () => this.authStatus$.next(false)
         });
     }
 
     login(email: string, password: string) {
-        const authData: AuthData = {email: email, password: password};
-        this.http.post<{token: string, expiresIn: number, userId: string }>(BACKEND_URL + "login", authData)
-        .subscribe(response => {
-            console.log(response);
+        const authData: AuthData = { email, password };
+        this.http.post<{ token: string, expiresIn: number, userId: string }>(BACKEND_URL + "login", authData)
+        .subscribe({
+            next: (response) => {
             const token = response.token;
-            this.token = token;
             if (token) {
                 const expiresInDuration = response.expiresIn;
                 this.setAuthTimer(expiresInDuration);
-                this.isAuthenticated = true;
-                this.userId = response.userId;
-                this.authStatusListener.next(true);
+
+                //Update your single reactive state block
+                this.authState.set({
+                    token: token,
+                    isAuthenticated: true,
+                    userId: response.userId
+                });
+
+                this.authStatus$.next(true);
+
                 const now = new Date();
                 const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
-                console.log(expirationDate);
-                this.saveAuthData(token, expirationDate, this.userId)
+                this.saveAuthData(token, expirationDate, response.userId);
                 this.router.navigate(['/']);
             }
-
             localStorage.setItem('token', token);
-        }, error => {
-            this.authStatusListener.next(false);
+        }, 
+        error: () => this.authStatus$.next(false)
         });
     }
 
@@ -82,26 +106,30 @@ export class AuthService {
         const now = new Date();
         const expiresIn = authInformation.expirationDate.getTime() - now.getTime();
         if (expiresIn > 0) {
-            this.token = authInformation.token;
-            this.isAuthenticated = true;
-            this.userId = authInformation.userId;
+            this.authState.set({
+                token: authInformation.token,
+                isAuthenticated: true,
+                userId: authInformation.userId
+            });
             this.setAuthTimer(expiresIn / 1000);
-            this.authStatusListener.next(true);
+            this.authStatus$.next(true);
         }
     }
 
     logout() {
-        this.token = '';
-        this.isAuthenticated = false;
-        this.authStatusListener.next(false);
-        this.userId = '';
+        this.authState.set({
+            token: '',
+            isAuthenticated: false,
+            userId: null
+        });
+        this.authStatus$.next(false);
+        
         clearTimeout(this.tokenTimer);
         this.clearAuthData();
         this.router.navigate(['/']);
     }
 
     private setAuthTimer(duration: number) {
-        console.log("Setting timer: " + duration);
         this.tokenTimer = setTimeout(() => {
                     this.logout();
                 }, duration * 1000);
@@ -130,6 +158,6 @@ export class AuthService {
             token: token,
             expirationDate: new Date(expirationDate),
             userId: userId
-        }
+        };
     }
 }

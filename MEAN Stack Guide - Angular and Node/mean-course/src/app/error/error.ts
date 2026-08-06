@@ -1,4 +1,4 @@
-import { Component, Inject } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from "@angular/material/dialog";
 import { MatAnchor } from "@angular/material/button";
 
@@ -8,5 +8,6 @@ import { MatAnchor } from "@angular/material/button";
 })
 
 export class ErrorComponent {
-    constructor(@Inject(MAT_DIALOG_DATA) public data: {message: string}) {}
+    //Modern injection of Material Dialog data context
+    public data = inject<{ message: string }>(MAT_DIALOG_DATA);
 }

@@ -1,14 +1,12 @@
-<div style="background: yellow; color: black; padding: 15px; z-index: 9999; position: relative;">
-  <h3>Debug Dashboard</h3>
-  <p>Array Length: {{ posts.length }}</p>
-  <ul>
-    <li *ngFor="let p of posts">Raw Post: {{ p.title }} - {{ p.content }}</li>
-  </ul>
-</div>
+@if (isLoading()) {
+<mat-spinner></mat-spinner>
+}
 
-<mat-spinner *ngIf="isLoading"></mat-spinner>
-<mat-accordion multi="true" *ngIf="posts.length > 0 && !isLoading">
-    <mat-expansion-panel *ngFor="let post of posts">
+@if (posts().length > 0 && !isLoading()) {
+<mat-accordion multi="true">
+    <!--For block requires track expression to enable DOM recycling without tracking functions-->
+    @for (post of posts(); track post.id) {
+    <mat-expansion-panel>
         <mat-expansion-panel-header>
             {{ post.title }}
         </mat-expansion-panel-header>
@@ -16,11 +14,19 @@
             <img [src]="post.imagePath" [alt]="post.title">
         </div>
         <p>{{ post.content }}</p>
-        <mat-action-row *ngIf="userIsAuthenticated && userId == post.creator">
+
+        @if (userIsAuthenticated() && userId() === post.creator) {
+        <mat-action-row>
             <a mat-button [routerLink]="['/edit', post.id]">Edit</a>
             <button mat-button (click)="onDelete(post.id)">Delete</button>
         </mat-action-row>
+        }
     </mat-expansion-panel>
+    }
 </mat-accordion>
-<mat-paginator [length]="totalPosts" [pageSize]="postsPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangedPage($event)" *ngIf="posts.length > 0"></mat-paginator>
-<p class="info-text mat-body-1" *ngIf="posts.length === 0 && !isLoading">No Posts added</p>
+
+<mat-paginator [length]="totalPosts()" [pageSize]="postsPerPage()" [pageSizeOptions]="pageSizeOptions" (page)="onChangedPage($event)"></mat-paginator>
+}
+@if (posts().length === 0 && !isLoading()) {
+    <p class="info-text mat-body-1">No Posts added</p>
+}

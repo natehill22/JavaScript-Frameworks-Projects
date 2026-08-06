@@ -1,17 +1,17 @@
-import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, CanActivate, GuardResult, MaybeAsync, Router, RouterStateSnapshot } from "@angular/router";
+import { inject } from "@angular/core";
+import { CanActivateFn, Router } from "@angular/router";
+
 import { AuthService } from "./auth.service";
 
-@Injectable()
 
-export class AuthGuard implements CanActivate {
-    constructor(private authService: AuthService, private router: Router) {}
+export const authGuard: CanActivateFn = (route, state) => {
+    const authService = inject(AuthService);
+    const router = inject(Router);
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): MaybeAsync<GuardResult> {
-        const isAuth = this.authService.getIsAuth();
-        if (!isAuth) {
-            this.router.navigate(['/login']);
-        }
-        return isAuth;
+    //Read directly from your new reactive authentication signal
+    const isAuth = authService.isAuthenticated();
+    if (!isAuth) {
+        router.navigate(['/login']);
     }
+    return isAuth;
 }

@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { PostCreateComponent } from "./posts/post-create/post-create";
-import { HeaderComponent } from './header/header';
-import { PostListComponent } from './posts/post-list/post-list';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+
+import { HeaderComponent } from './header/header';
 import { AuthService } from './auth/auth.service';
 
 @Component({
@@ -12,10 +11,9 @@ import { AuthService } from './auth/auth.service';
   styleUrl: './app.scss',
 })
 
-export class App implements OnInit {
-  constructor(private authService: AuthService) {}
+export class App {
+  private authService = inject(AuthService);
 
-  ngOnInit(): void {
-    this.authService.autoAuthUser();
-  }
+  //Class initialization block runs instantly on load
+  init = this.authService.autoAuthUser();
 }
