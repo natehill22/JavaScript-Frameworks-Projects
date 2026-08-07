@@ -17,37 +17,49 @@ import { AuthService } from "../../auth/auth.service";
 })
 
 export class PostListComponent {
-    public postsService = inject(PostsService);
-    private authService = inject(AuthService);
+    public postsService = inject(PostsService); //Gives access to data operations within PostsService
+    private authService = inject(AuthService); //Gives access to user session states within AuthService
 
-    //Pagination State Signals
-    postsPerPage = signal(2);
-    currentPage = signal(1);
-    pageSizeOptions = [1, 2, 5, 10];
+    //Tracks pagination configuration on the PostService
+    postsPerPage = computed(() => this.postsService.currentParams().postsPerPage);
+    currentPage = computed(() => this.postsService.currentParams().currentPage);
+    pageSizeOptions = [1, 2, 5, 10]; //Feeds selection options into the dropdown menu
 
-    //Read state streams directly out of your service signals
-    posts = this.postsService.posts;
-    totalPosts = this.postsService.totalPosts;
-    isLoading = this.postsService.isLoading; //Loads state Signal
+    //Links UI template values directly to data within the service
+    posts = this.postsService.posts; //Tracks array of items
+    totalPosts = this.postsService.totalPosts; //Monitors global db count
+    isLoading = this.postsService.isLoading; //Switches visibility of loading wheel
 
-    private authStatusSignal = toSignal<boolean>(this.authService.getAuthStatusListener());
-    userIsAuthenticated = computed(() => this.authStatusSignal() ?? this.authService.getIsAuth());
-    userId = computed(() => this.userIsAuthenticated() ? this.authService.getUserId() : '');
+    //Manages authentication by automatically updating login state and userId
+    private authStatusSignal = toSignal<boolean>(this.authService.getAuthStatusListener()); //Translates asynchronous login streams into synchronous state signals
+    userIsAuthenticated = computed(() => this.authStatusSignal() ?? this.authService.getIsAuth()); //Determines if the user is logged in
+    userId = computed(() => this.userIsAuthenticated() ? this.authService.getUserId() : ''); //Gets the ID of logged in user (if false, it clears the value and state)
 
-    constructor() {
-        this.postsService.getPosts(this.postsPerPage(), this.currentPage());
-    }
-
-
+    //Catches pagination events and shift index to align with backend's 0-index
     onChangedPage(pageData: PageEvent) {
-        this.currentPage.set(pageData.pageIndex + 1);
-        this.postsPerPage.set(pageData.pageSize);
-        this.postsService.getPosts(this.postsPerPage(), this.currentPage());
+        this.postsService.getPosts(pageData.pageSize, pageData.pageIndex + 1);
     }
 
+    //Deletes post and hangles pagination issue
     onDelete(postId: string) {
         this.postsService.deletePost(postId).subscribe({
-            next: () => this.postsService.refreshPosts()
+            next: () => {
+                //Calculates how many posts remain on the current page before reloading
+                const remainingPostsAfterDelete = this.totalPosts() - 1; //Subtracts 1 to account for the one deleted
+                const postsPerPage = this.postsPerPage();
+                const currentPage = this.currentPage();
+
+                //Calculates total number of pages needed for remaining posts
+                const remainingPages = Math.ceil(remainingPostsAfterDelete / postsPerPage);
+
+                //Drops down by 1 page if current page is higher than remaining pages and we aren't on page 1
+                if (currentPage > remainingPages && currentPage > 1) {
+                    this.postsService.getPosts(postsPerPage, currentPage - 1); //Updates service parameters so the reload fetches the correct page
+                } else {
+                //Triggers reload to pull fresh dataset
+                this.postsService.refreshPosts()
+                }
+            }                
         });
     }
 }

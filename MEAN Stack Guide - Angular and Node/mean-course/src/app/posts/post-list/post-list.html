@@ -1,7 +1,7 @@
 @if (isLoading()) {
 <mat-spinner></mat-spinner>
 }
-
+<!--Shows post title, content and image if there are posts and state is not loading-->
 @if (posts().length > 0 && !isLoading()) {
 <mat-accordion multi="true">
     <!--For block requires track expression to enable DOM recycling without tracking functions-->
@@ -15,6 +15,7 @@
         </div>
         <p>{{ post.content }}</p>
 
+        <!--Shows delete and edit buttons only if they created the post-->
         @if (userIsAuthenticated() && userId() === post.creator) {
         <mat-action-row>
             <a mat-button [routerLink]="['/edit', post.id]">Edit</a>
@@ -24,9 +25,10 @@
     </mat-expansion-panel>
     }
 </mat-accordion>
-
-<mat-paginator [length]="totalPosts()" [pageSize]="postsPerPage()" [pageSizeOptions]="pageSizeOptions" (page)="onChangedPage($event)"></mat-paginator>
+<!--Pagination UI data and events-->
+<mat-paginator [length]="totalPosts()" [pageSize]="postsPerPage()" [pageSizeOptions]="pageSizeOptions" [pageIndex]="currentPage() -1" (page)="onChangedPage($event)"></mat-paginator>
 }
+<!--Displays message for having no posts-->
 @if (posts().length === 0 && !isLoading()) {
     <p class="info-text mat-body-1">No Posts added</p>
 }
