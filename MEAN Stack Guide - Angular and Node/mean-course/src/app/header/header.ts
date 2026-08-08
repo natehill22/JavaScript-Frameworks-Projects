@@ -14,12 +14,12 @@ import { AuthService } from "../auth/auth.service";
 })
 
 export class HeaderComponent {
-    private authService = inject(AuthService);
+    private authService = inject(AuthService); //Gives access to user session states within AuthService
 
-    //Binds directly to the read-only auth signal from the auth service
+    //Stores a reference to the auth signal in the auth service
     userIsAuthenticated = this.authService.isAuthenticated;
 
-
+    //Logs out of authentication
     onLogout() {
         this.authService.logout();
     }

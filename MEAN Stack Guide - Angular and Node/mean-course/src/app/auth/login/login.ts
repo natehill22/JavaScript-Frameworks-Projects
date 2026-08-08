@@ -14,13 +14,15 @@ import { AuthService } from "../auth.service";
     imports: [MatInput, MatCard, MatProgressSpinner, MatFormField, MatError, FormsModule, MatAnchor],
     styleUrls: ['./login.css']
 })
-export class LoginComponent {
-    public authService = inject(AuthService);
 
-    //Component State Signal
+//Manages login behavior
+export class LoginComponent {
+    public authService = inject(AuthService); //Gives access to user session states within AuthService
+
+    //Initializes a boolean signal to control is the loading spinner shows on screen
     isLoading = signal<boolean>(false);
 
-    //Convert legacy listener stream to a signal to catch authentication failures/successes
+    //Converts legacy listener stream to a signal to monitor authentication updates
     private authStatusSignal = toSignal(this.authService.getAuthStatusListener());
 
     constructor() {
@@ -34,9 +36,9 @@ export class LoginComponent {
 
     onLogin(form: NgForm) {
         if (form.invalid) {
-            return;
+            return; //Stops login attempt if form is invalid
         }
-        this.isLoading.set(true);
-        this.authService.login(form.value.email, form.value.password);
+        this.isLoading.set(true); //Shows spinner while network request processes
+        this.authService.login(form.value.email, form.value.password); //Extracts user entered email and password and sends to share auth services to process login
     }
 }

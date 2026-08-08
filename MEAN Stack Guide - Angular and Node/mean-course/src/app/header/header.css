@@ -9,6 +9,7 @@ a {
     text-decoration: none;
 }
 
+/*Gives color to the header to differentiate it form the background*/
 mat-toolbar {
   background-color: #ffd7f5 !important; 
 }

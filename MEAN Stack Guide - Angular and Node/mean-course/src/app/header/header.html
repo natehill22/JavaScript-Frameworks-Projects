@@ -1,9 +1,11 @@
 <mat-toolbar>
     <span>
+        <!--Turns into a router link to the main page only when clicked upon-->
         <a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">MyMessages</a>
     </span>
     <span class="spacer"></span>
     <ul>
+        <!--Buttons show differently if you are authenticated versus if you are not yet authenticated-->
         @if (userIsAuthenticated()){
         <li>
             <a mat-button routerLink="/create" routerLinkActive="active-link">New Post</a>

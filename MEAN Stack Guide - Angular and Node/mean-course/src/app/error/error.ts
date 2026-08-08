@@ -8,6 +8,6 @@ import { MatAnchor } from "@angular/material/button";
 })
 
 export class ErrorComponent {
-    //Modern injection of Material Dialog data context
+    //Injects Material Dialog data context (the error message)
     public data = inject<{ message: string }>(MAT_DIALOG_DATA);
 }

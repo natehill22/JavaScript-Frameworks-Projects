@@ -12,8 +12,8 @@ import { AuthService } from './auth/auth.service';
 })
 
 export class App {
-  private authService = inject(AuthService);
+  private authService = inject(AuthService); //Gives access to user session states within AuthService
 
-  //Class initialization block runs instantly on load
+  //Triggers authentication check instantly upon load
   init = this.authService.autoAuthUser();
 }

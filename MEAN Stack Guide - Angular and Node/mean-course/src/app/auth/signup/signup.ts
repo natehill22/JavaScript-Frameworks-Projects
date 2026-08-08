@@ -13,17 +13,19 @@ import { AuthService } from "../auth.service";
     imports: [MatInput, MatCard, MatProgressSpinner, MatFormField, MatError, FormsModule, MatAnchor],
     styleUrls: ['./signup.css']
 })
-export class SignupComponent {
-    public authService = inject(AuthService);
 
-    //Component State Signal
+//Manages signin behavior
+export class SignupComponent {
+    public authService = inject(AuthService); //Gives access to user session states within AuthService
+
+    //Initializes a boolean signal to control is the loading spinner shows on screen
     isLoading = signal<boolean>(false);
 
-    //Convert the legacy stream into a sage signal context
+    //Converts legacy listener stream to a signal to monitor authentication updates
     private authStatusSignal = toSignal(this.authService.getAuthStatusListener());
 
     constructor() {
-        //Automatically turns off the loading spinner when the auth network request finishes
+        //Automatically turns off loading spinner whenever auth state settles
         effect(() => {
             if (this.authStatusSignal() !== undefined) {
                 this.isLoading.set(false);
@@ -33,9 +35,9 @@ export class SignupComponent {
 
     onSignup(form: NgForm) {
         if (form.invalid) {
-            return;
+            return; //Stops signup attempt if form is invalid
         }
-        this.isLoading.set(true);
-        this.authService.createUser(form.value.email, form.value.password);
+        this.isLoading.set(true); //Shows spinner while network request processes
+        this.authService.createUser(form.value.email, form.value.password); //Extracts user entered email and password and sends to share auth services to process signup
     }
 }
