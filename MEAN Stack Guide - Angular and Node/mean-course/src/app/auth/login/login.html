@@ -2,7 +2,9 @@
    @if (isLoading()) {
    <mat-spinner></mat-spinner>
    }
+   <!--Shows the login form (with email and password fields) if state is not loading-->
    @if (!isLoading()) {
+    <!--Connects the submit button with the Login functionality-->
     <form (submit)="onLogin(loginForm)" #loginForm="ngForm">
      <mat-form-field>
         <input matInput name="email" ngModel type="email" placeholder="E-mail" #emailInput="ngModel" required email>

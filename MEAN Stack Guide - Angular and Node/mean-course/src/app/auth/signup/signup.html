@@ -2,7 +2,9 @@
    @if (isLoading()) {
    <mat-spinner></mat-spinner>
    }
+   <!--Shows the signup form (with email and password fields) if state is not loading-->
    @if (!isLoading()) {
+   <!--Connects the submit button with the Signup/Create User functionality-->
     <form (submit)="onSignup(signupForm)" #signupForm="ngForm">
      <mat-form-field>
         <input matInput name="email" ngModel type="email" placeholder="E-mail" #emailInput="ngModel" required email>

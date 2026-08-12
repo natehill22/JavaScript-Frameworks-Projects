@@ -168,8 +168,8 @@ export class AuthService {
         const token = localStorage.getItem("token");
         const expirationDate = localStorage.getItem("expiration");
         const userId = localStorage.getItem("userId");
-        if (!token || !expirationDate) {
-            return; //Stop the process if no token or expDate exists
+        if (!token || !expirationDate || !userId) {
+            return null; //Stop the process if no token, expDate, or userId exists
         }
         return { //Otherwise, return the browser's stored data
             token: token,

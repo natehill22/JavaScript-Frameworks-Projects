@@ -95,7 +95,14 @@ export class PostsService {
             postData = {id: id, title: title, content: content, imagePath: image, creator: ''};
         }
         this.http.put(BACKEND_URL + id, postData)
-        .subscribe(() => this.router.navigate(["/"])); //Redirects users to main page upon success
+        .subscribe({
+            next: () => {
+                this.router.navigate(["/"]).then(() => { //Redirects users to main page upon success
+                    this.refreshPosts();
+                }); 
+            },
+            error: (err) => console.error("Update failed:", err)
+        });
     }
 
     //Sends a delete request to remove a post by its id and returns the Observable
