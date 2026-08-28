@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 
+//Defines the database model for the Todo item to be saved
 const TodoSchema = new mongoose.Schema({
     title: {type: String, required: true },
-    completed: {type: Boolean, default: false },
+    isCompleted: {type: Boolean, default: false },
     createdAt: {type: Date, default: Date.now }
 });
 
