@@ -1,44 +1,45 @@
 <div class="todo-container">
-  <h1>{{ title() }}</h1>
+  <h1>{{ title() }}</h1> <!--Dispalys application title by reading the 'title' signal-->
 
-  <!-- Input Form -->
+  <!--Input Form-->
   <div class="todo-form">
-    <!-- Notice the signal structure matching your binding layer -->
     <input 
       type="text" 
-      [ngModel]="newTodoTitle()"
-      (ngModelChange)="newTodoTitle.set($event)"
-      (keyup.enter)="addNewTodo()" 
-      placeholder="What needs to be done currently?" 
-      maxLength="100"
+      [ngModel]="newTodoTitle()" //Binds input's visual value to the current newTodoTitle signal value  
+      (ngModelChange)="newTodoTitle.set($event)" //Listens and updates newTodoTitle signal with the entered value
+      (keyup.enter)="addNewTodo()" //Runs the addNewTodo method upon Enter keypress
+      placeholder="What needs to be done currently?" //Shows text when no data is entered
+      maxLength="100" //Sets a maximum length of characters
     />
-    <button (click)="addNewTodo()">Add Task</button>
+    <button (click)="addNewTodo()">Add Task</button> <!--Creates a button that runs the addNewTodo method upon press-->
   </div>
 
-  <!-- Todo List -->
+  <!--Todo List-->
   <ul class="todo-list">
-    <!-- Invoking the todos signal container dynamically -->
+    <!--Loops through all items in the todos array (optimizing rendering by tracking each unique _id)-->
     @for (todo of todos(); track todo._id) {
-      <li [class.completed]="todo.isCompleted">
+      <li [class.completed]="todo.isCompleted"> <!--Creates a list item for the task and applies the 'completed' class to iterations that have an 'true' isCompleted property-->
         <div class="todo-item-left">
           <input 
-            type="checkbox" 
-            [checked]="todo.isCompleted" 
-            (change)="toggleTodo(todo)"
+            type="checkbox" //Creates a checkbox
+            [checked]="todo.isCompleted" //Automatically checks or unchecks the box based on the task's current completion status
+            (change)="toggleTodo(todo)" //Runs the toggleTodo method whenever the checked status changes
             class="todo-checkbox"
           />
           <div class="todo-content">
-            <span class="todo-text">{{ todo.title }}</span>
-            <span class="todo-date" *ngIf="todo.createdAt">
-              {{ todo.createdAt | date:'MMM d' }}
+            <span class="todo-text">{{ todo.title }}</span> <!--Shows todo text-->
+            @if (todo.createdAt) {
+            <span class="todo-date">
+              {{ todo.createdAt | date:'MMM d' }} <!--Shows created date in "Aug 28" format-->
             </span>
+            } 
           </div>
         </div>
-        <button class="delete-btn" (click)="removeTodo(todo._id)">✕</button>
+        <button class="delete-btn" (click)="removeTodo(todo._id)">✕</button> <!--Creates delete button that runs the removeTodo method if clicked-->
       </li>
     } @empty {
       <div class="empty-state">
-        <p>No tasks left!</p>
+        <p>No tasks left!</p> <!--Shows an empty state message if no todos are present-->
       </div>
     }
   </ul>
