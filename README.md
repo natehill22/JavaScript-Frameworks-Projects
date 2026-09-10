@@ -4,9 +4,9 @@ This repository is for my (Nathaniel Hill's) Tech Academy, Pluralsight, and Udem
 
 ## Projects:
 - [Student Portfolio](https://natehill22.github.io/)
-- [MEAN Stack Guide (Angular and Node)](/MEAN%20Stack%20Guide%20-%20Angular%20and%20Node/mean-course)
-- [MEN app - nodejs-express-mongodb](/nodejs-express-mongodb)
-- [MEAN FullStack Todo App](/My%20MEAN%20Todo)
+- [Todo App - MEAN Stack](/My%20MEAN%20Todo)
+- [Posts App - MEAN Stack (Angular and Node)](/MEAN%20Stack%20Guide%20-%20Angular%20and%20Node/mean-course)
+- [Tutorials App - MEN stack](/nodejs-express-mongodb)
 - [Vue - Hangman](/Vue/HangmanGame)
 - [JQuery - Simon Says](/SimonSaysGame)
 - [React - Connect 4](/Connect4Game/connect-four)
@@ -17,31 +17,25 @@ This repository is for my (Nathaniel Hill's) Tech Academy, Pluralsight, and Udem
 ## Student Portfolio
 This page is an active portfolio webpage for me as a developer. I've updated it with modern JavaScript, HTML, and CSS for looks, security, and functionality: I added solid RegEx validation for the pop-up form, added dynamic scroll nav-highlighting, added and adjusted image rendering for consistency, and fixed problematic mobile/tablet rendering down to 320px screen-width. 
 
-## MEAN Stack Guide (Angular and Node)
+## Todo App - MEAN Stack
+The assignment was to make a simple full-stack Todo App; I opted to use decoupled architecture to maintain servers for both backend and frontend that communicated through RESTful API network requests. I built out CRUD functionality with modern Angular standards through Angular signals (to immediately see updates) and @if syntax (for better performance). One of my favorite aspects of coding is envisioning what you want, and then stopping at nothing until you've built it just right; many elements of this project (from the Todo date formatting to the edit state of checked items) fed that effectuation. It was a joy to work on.  
+
+## Posts app - MEAN Stack (Angular and Node)
 Following the tutorials, I built a single-page CRUD-functional web-application that can display, update, and manage users' posts. Complete with image upload, pagination, user authentication, authorization, error handling, and many other optimizations, I got to learn/use MIME-type validators, tokens, and the bcrypt and jwt libraries to achieve the app's functionality. 
 
 This course was programmed using a significantly outdated version of Angular, and I chose to, once finished, modernize the entire code base. I replaced most subscriptions with Angular signals, introduced error handling, removed troublesome promise/then statements, among many other changes.
 
-## MEN app - nodejs-express-mongodb
---
-In this lesson, I learned how to use JavaScript with HTML and CSS to make a calculator. I used many functions, event listeners, conditional statements and variables to create the many functionalities expected of a calculator clearing, decimals, adding, subtract, multiplication, division, recognizing button clicks, keeping track of values, updating the display, etc.. 
-
-## MEAN FullStack Todo App
---
-This project was used as the introduction to using JQuery; in the project, I used JQuery methods to add animated "shine" and scroll/sizing effects, to hide and show elements to create and FAQ, and to use mouseenter/mouseleave events to show and hide car titles based upon mouse placement. I really enjoyed the concise syntax of JQuery--it felt having similar levels of functionality for far less code.  
+## Tutorials app - MEN stack
+As one can infer from the name, this was a lesson in how to create a MEAN app without programming in the Angular frontend. The goal was to quickly build successful simple CRUD functionality for an app that manages Tutorials using Node.js RESTful APIs, Express middleware, and the Mongoose library (to add schema-based models to our application data). I got more practice building out models, routes, and controllers to enable full app functionality. As no frontend was built for this app, all testing was done using Postman. 
 
 ## Vue - Hangman
---
-Here, I used JavaScript, HTML and CSS to make a website for ordering pizza and calculating the total amount of charge due (factoring in for 1 free topping) and then displaying that value on the page. The focus of the project was on using JavaScript to do math and to show that the console log can be used to help in programming (there are a of details that show in the console log on ths project). Functions and conditional statements were used to complete this page. 
+For this project, I programmed a Hangman game using the Vue framework. I loved working in Vue; it seems so functional and uncomplicated--very user-friendly. I got to utilize the JavaScript canvas to draw the 2D renderings tied to user action (drawing legs upon wrong guess, etc.), used v-cloak to hide letters until selected, used RegEx to define acceptable inputs, and even enabled a Two player mode where the other players can write an unpre-programmed word for the guessing player.  
 
 ## JQuery - Simon Says
---
-Here, I was tasked with writing a program that interacted with a free online API to perform a viewable result, and after figuring one out, I felt compelled to do more. I ended up writing three on one page, all triggered through separate buttons. The first returns a random fact about cats, the second produces an image of a dog, and the third returns a sentence translated into Gungan (from Star Wars); while the sentence is always static, the fact and image will update every time their buttons are presssed. 
+Here, I was tasked with writing and personalizing a Simon Says game using JQuery. I used JQuery to easily manipulate DOM elements, build animations (sliding each square in [delayed] from a different side upon page load, fadeIn/Out), and add and remove classes that direct game event states (game over, waiting, playing, on, etc.). I also added many color adjustments to make gameplay more intuitive (grey overlays before playable state, black replacement when computer reveals pattern, white fade when user selects the correct pattern element). 
 
 ## React - Connect 4
---
-This project was the first lesson in JavaScript form validations, and I got really into it. Validation work really suits me because it leads to a stronger overall product--I love predicting how people will interact with the product and shielding against potential eventualities. For this project, I used JavaScript validations for empty form error messages and regex for the specific email and phone number formatting error messages. I also used CSS to create the style of the page.
+In this project, I used React to make a Connect-4 game. As React is component-based architecture, I had to build a cascade of components (App, Board, Column, Tile) to handle the function of this game--I had to manage the state of every tile and update them upon every click/move. This project introduced me to the spread operator, I got to build out a gravity mechanic (to drop the tile into the lowest available space in the selected column), and I added sound effects and looping music upon game start; these were all new to me. The tutorial covered Connect-4 horizontal and vertical win conditions, but I chose to delve deeper and build the diagonal win conditions.
 
 ## Angular - Rock Paper Scissors
---
-This page, while barebones, introduced us to using JavaScript to perform math and requested I make use of new (to me) concepts like new Date() and Math.random(). I had a lot of fun with these projects and ended up making a function that returns a random number and conditional answers based upon where it is in reference to 5, several time-based functions that alter based upon the time of day that you interact with them, and a Coin Flip function that you can play over and over again and even utilizes some validations. 
+In this Angular app, I made a Rock Paper Scissors game. This game makes heavy use of Angular signals to give immediate updates to the page; through these signals, I display User and Computer selections for each round and keep track of total wins and losses. I used TypeScript in this project to help define the 'weapons', set a random selection for the computers' choice of those weapons, and defined win, lose, and draw conditions as well as conditional text. 
