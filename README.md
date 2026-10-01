@@ -3,7 +3,6 @@ This repository is for my (Nathaniel Hill's) Tech Academy, Pluralsight, and Udem
 
 
 ## Projects:
-- [Student Portfolio](https://natehill22.github.io/)
 - [Todo App - MEAN Stack](/My%20MEAN%20Todo)
 - [Posts App - MEAN Stack (Angular and Node)](/MEAN%20Stack%20Guide%20-%20Angular%20and%20Node/mean-course)
 - [Tutorials App - MEN stack](/nodejs-express-mongodb)
@@ -13,9 +12,6 @@ This repository is for my (Nathaniel Hill's) Tech Academy, Pluralsight, and Udem
 - [Angular - Rock Paper Scissors](/Rock%20Paper%20Scissors%20Angular/rockpaperscissors)
 
 
-
-## Student Portfolio
-This page is an active portfolio webpage for me as a developer. I've updated it with modern JavaScript, HTML, and CSS for looks, security, and functionality: I added solid RegEx validation for the pop-up form, added dynamic scroll nav-highlighting, added and adjusted image rendering for consistency, and fixed problematic mobile/tablet rendering down to 320px screen-width. 
 
 ## Todo App - MEAN Stack
 The assignment was to make a simple full-stack Todo App; I opted to use decoupled architecture to maintain servers for both backend and frontend that communicated through RESTful API network requests. I built out CRUD functionality with modern Angular standards through Angular signals (to immediately see updates) and @if syntax (for better performance). One of my favorite aspects of coding is envisioning what you want, and then stopping at nothing until you've built it just right; many elements of this project (from the Todo date formatting to the edit state of checked items) fed that effectuation. It was a joy to work on.  
