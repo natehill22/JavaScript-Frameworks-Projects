@@ -24,7 +24,7 @@ The Posts app is intended as a single-page CRUD-functional web application where
 
 - Image Upload: When a user is shown the form to create a Post, the option for uploading an image exists. Once created, this image then shows as a part of that post. Multer and MIME-type validators were utilized to ensure that only jpeg or png type files could be uploaded.
 
-- Pagination: Angular Materials was utilized to add quick, useful, and nice-looking features like pagination. With this features, users can navigate from page to page, adjust the number of posts per page, and get a realistic page total. 
+- Pagination: Angular Materials was utilized to add quick, useful, and nice-looking features like pagination. With this feature, users can navigate from page to page, adjust the number of posts per page, and get a realistic page total. 
 
 - User Authentication: Using a new database for users, the bcrypt library for password hashing, and jsonwebtokens to enact login timeouts, User Authentication functionality was set up. A Signup page was built to create new users and a Login page was built to log existing users in (only when they had the matching identification credentials). Error handling was also built to protect against unwanted access and to provide helpful error messaging. 
 

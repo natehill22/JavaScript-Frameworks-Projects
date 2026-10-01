@@ -15,9 +15,9 @@ The Todo App is a simple full-stack app designed to help users in managing (crea
 - __Version Control__: Git
 
 ## Key Features
-- Task Addition and Removal: Users can quickly add Todo tasks through button select or the 'Enter' button. When users want to remove a task from the list (which is different than updating its completed state), they simply need to hover over the X button on the tasks row and press it. 
+- Task Addition and Removal: Users can quickly add Todo tasks through button select or the 'Enter' button. When users want to remove a task from the list (which is different than updating its completed state), they simply need to hover over the X button on the task's row and press it. 
 
-- Date Assignment: Upon Task creation, that todo is updated with a formatted (for ease) date on the far right side of the task. The date is automatically pulled from the current datetime to enhance the users' experience. 
+- Date Assignment: Upon Task creation, that todo is updated with a formatted (for ease) date on the far right side of the task's row. The date is automatically pulled from the current datetime to enhance the users' experience. 
 
 - Dynamic State Updating: When a task's checkbox is selected, the checkbox is distinctly marked and all text content of that task is struckthrough. If that checkbox is de-selected, these changes are removed. 
 
